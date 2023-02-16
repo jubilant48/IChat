@@ -203,20 +203,10 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		FA4BD2BF2954B6F3001028FD /* SignIn&Auth */ = {
-			isa = PBXGroup;
-			children = (
-				FA6CC5E4294A4A37001B5CC3 /* AuthViewController.swift */,
-				FAA1A7532950CBB800FD9C1D /* SignUpViewController.swift */,
-				FAA1A7572950E09600FD9C1D /* LoginViewController.swift */,
-				FAA1A7592950F51D00FD9C1D /* SetupProfileViewController.swift */,
-			);
-			name = "SignIn&Auth";
-			sourceTree = "<group>";
-		};
 		FA4BD2C22954B7A2001028FD /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				FA9A9AF1299E9302009ABE6E /* SignIn&Auth */,
 				FA4BD2C32954B806001028FD /* MainTabBarController.swift */,
 				FA4BD2C52954B865001028FD /* PeopleViewController.swift */,
 				FA4BD2C02954B737001028FD /* ListViewController.swift */,
@@ -254,7 +244,6 @@
 				FA6CC5E2294A4A37001B5CC3 /* SceneDelegate.swift */,
 				FA2B77FB296F3E750084D1BD /* Services */,
 				FA4BD2C22954B7A2001028FD /* Controllers */,
-				FA4BD2BF2954B6F3001028FD /* SignIn&Auth */,
 				FA29B2242965E17D008EC14B /* Protocols */,
 				FAA1A74E2950BD1700FD9C1D /* Extensions */,
 				FA2B7802296F4E3C0084D1BD /* Helpers */,
@@ -275,6 +264,17 @@
 				FA4F461C2986E153003EBF36 /* ImageItem.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		FA9A9AF1299E9302009ABE6E /* SignIn&Auth */ = {
+			isa = PBXGroup;
+			children = (
+				FA6CC5E4294A4A37001B5CC3 /* AuthViewController.swift */,
+				FAA1A7532950CBB800FD9C1D /* SignUpViewController.swift */,
+				FAA1A7572950E09600FD9C1D /* LoginViewController.swift */,
+				FAA1A7592950F51D00FD9C1D /* SetupProfileViewController.swift */,
+			);
+			path = "SignIn&Auth";
 			sourceTree = "<group>";
 		};
 		FAA1A74D2950BC6800FD9C1D /* UIKit */ = {
