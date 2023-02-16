@@ -51,16 +51,12 @@ final class AuthViewController: UIViewController {
                 FirestoreService.shared.getUserData(user: user) { result in
                     switch result {
                     case .success(let mUser):
-                        self.showAlert(with: "Успешно!", and: "Вы автаризованны!") {
-                            let mainTabBarController = MainTabBarController(currentUser: mUser)
-                            mainTabBarController.modalPresentationStyle = .fullScreen
-                            
-                            self.present(mainTabBarController, animated: true)
-                        }
-                    case .failure(_):
-                        self.showAlert(with: "Успешно!", and: "Вы зарегестрированны!") {
-                            self.present(SetupProfileViewController(currentUser: user), animated: true)
-                        }
+                        let mainTabBarController = MainTabBarController(currentUser: mUser)
+                        mainTabBarController.modalPresentationStyle = .fullScreen
+                        
+                        self.present(mainTabBarController, animated: true)
+                    case .failure(_):                        
+                        self.present(SetupProfileViewController(currentUser: user), animated: true)
                     }
                 }
             case .failure(let error):

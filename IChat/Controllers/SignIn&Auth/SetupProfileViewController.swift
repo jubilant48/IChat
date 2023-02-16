@@ -104,13 +104,11 @@ final class SetupProfileViewController: UIViewController {
                                                 description: aboutMeTextField.text,
                                                 sex: sexSegmentedControl.titleForSegment(at: sexSegmentedControl.selectedSegmentIndex)) { result in
             switch result {
-            case .success(let mUser):
-                self.showAlert(with: "Успешно!", and: "Приятного общения!") {
-                    let mainTabBarController = MainTabBarController(currentUser: mUser)
-                    mainTabBarController.modalPresentationStyle = .fullScreen
-                    
-                    self.present(mainTabBarController, animated: true)
-                }
+            case .success(let mUser):                
+                let mainTabBarController = MainTabBarController(currentUser: mUser)
+                mainTabBarController.modalPresentationStyle = .fullScreen
+                
+                self.present(mainTabBarController, animated: true)
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
