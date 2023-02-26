@@ -8,6 +8,22 @@
 import UIKit
 
 final class InsertableTextField: UITextField {
+    // MARK: Properties
+    
+    override var textInputMode: UITextInputMode? {
+        for mode in UITextInputMode.activeInputModes {
+            if isEmoji {
+                if mode.primaryLanguage == "emoji" {
+                    self.isEmoji = false
+                    return mode
+                }
+            }
+        }
+        return nil
+    }
+    
+    private var isEmoji: Bool = false
+    
     // MARK: Init
     
     override init(frame: CGRect) {
@@ -21,11 +37,12 @@ final class InsertableTextField: UITextField {
         layer.cornerRadius = 18
         layer.masksToBounds = true
         
-        let image = UIImage(systemName: "smiley")
-        let imageView  = UIImageView(image: image)
-        imageView.setupColor(color: .lightGray)
+        let leftButton = UIButton(type: .system)
+        leftButton.setImage(UIImage(systemName: "smiley"), for: .normal)
+        leftButton.tintColor = .lightGray
+        leftButton.addTarget(self, action: #selector(showEmoji), for: .touchUpInside)
         
-        leftView = imageView
+        leftView = leftButton
         leftView?.frame = CGRect(x: 0, y: 0, width: 19, height: 19)
         leftViewMode = .always
         
@@ -41,6 +58,13 @@ final class InsertableTextField: UITextField {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Actions
+    
+    @objc private func showEmoji() {
+        self.isEmoji = true
+        self.becomeFirstResponder()
     }
     
     // MARK: leftView, rightView, textRect, placeholderRect and editingRect methods
@@ -62,14 +86,14 @@ final class InsertableTextField: UITextField {
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 36, dy: 0)
+        return bounds.insetBy(dx: 42, dy: 0)
     }
     
     override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 36, dy: 0)
+        return bounds.insetBy(dx: 42, dy: 0)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 36, dy: 0)
+        return bounds.insetBy(dx: 42, dy: 0)
     }
 }

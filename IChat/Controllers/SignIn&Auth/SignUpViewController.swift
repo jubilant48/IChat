@@ -111,6 +111,10 @@ final class SignUpViewController: UIViewController {
     // MARK: Methods
     
     private func configureElements() {
+        // Configure scrollView
+        scrollView.alwaysBounceVertical = true
+        scrollView.keyboardDismissMode = .onDrag
+        
         // Configure welcomeLabel
         welcomeLabel.textAlignment = .center
         

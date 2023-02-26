@@ -45,6 +45,9 @@ final class ChatsViewController: MessagesViewController {
         
         self.navigationController?.navigationBar.tintColor = .label
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        // TODO: put to into a function
         configureMessageInputBar()
         
         if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
@@ -78,7 +81,7 @@ final class ChatsViewController: MessagesViewController {
                         }
                     }
                 } else {
-                    self.insertNewMessage(message: message)
+                    self.insertNewMessage(message: message, animated: true)
                 }
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)
@@ -88,6 +91,11 @@ final class ChatsViewController: MessagesViewController {
     }
     
     // MARK: Actions
+    
+    @objc func keyboardWillAppear(notification: NSNotification) {
+        messagesCollectionView.contentInset.bottom += 10
+        messagesCollectionView.scrollToLastItem()
+    }
     
     @objc private func cameraButtonPressed(_ sender: UIButton) {
         let imagePicker = UIImagePickerController()
@@ -121,21 +129,13 @@ final class ChatsViewController: MessagesViewController {
     
     // MARK: Methods
     
-    private func insertNewMessage(message: MMessage) {
+    private func insertNewMessage(message: MMessage, animated: Bool = false) {
         guard !messages.contains(message) else { return }
         messages.append(message)
         messages.sort()
-        
-        let isLatestMessage = messages.firstIndex(of: message) == (messages.count - 1)
-        let shouldScrollToBottom = messagesCollectionView.isAtBottom && isLatestMessage
-        
+
         messagesCollectionView.reloadData()
-        
-        if shouldScrollToBottom {
-            DispatchQueue.main.async {
-                self.messagesCollectionView.scrollToLastItem(animated: true)
-            }
-        }
+        self.messagesCollectionView.scrollToLastItem(animated: animated)
     }
     
     private func sendImage(image: UIImage) {
@@ -233,7 +233,7 @@ extension ChatsViewController: UIImagePickerControllerDelegate {
 
 extension ChatsViewController: MessagesDataSource {
     func currentSender() -> MessageKit.SenderType {
-        return Sender(senderId: user.id, displayName: user.username)
+        return MSender(senderId: user.id, displayName: user.username)
     }
     
     func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessageKit.MessagesCollectionView) -> MessageKit.MessageType {
@@ -249,14 +249,19 @@ extension ChatsViewController: MessagesDataSource {
     }
     
     func cellTopLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
-        if indexPath.item % 4 == 0 {
-            return NSAttributedString(string: MessageKitDateFormatter.shared.string(from: message.sentDate), attributes: [
-                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
-                NSAttributedString.Key.foregroundColor: UIColor.darkGray
-            ])
-        } else {
-            return nil
+        let beforeIndex = indexPath.index(before: indexPath.item)
+        
+        if beforeIndex >= 0 {
+            let beforeMessage = messages[beforeIndex]
+            
+            if !beforeMessage.sentDate.hasSame(.day, as: message.sentDate) {
+                return NSAttributedString(string: MessageKitDateFormatter.shared.string(from: message.sentDate), attributes: [
+                    NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 10),
+                    NSAttributedString.Key.foregroundColor: UIColor.darkGray
+                ])
+            }
         }
+        return nil
     }
 }
 
@@ -268,11 +273,17 @@ extension ChatsViewController: MessagesLayoutDelegate {
     }
     
     func cellTopLabelHeight(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGFloat {
-        if indexPath.item % 4 == 0 {
-            return 30
-        } else {
-            return 0
+        let beforeIndex = indexPath.index(before: indexPath.item)
+        
+        if beforeIndex >= 0 {
+            let beforeMessage = messages[beforeIndex]
+            
+            if !beforeMessage.sentDate.hasSame(.day, as: message.sentDate) {
+                return 30
+            }
         }
+        
+        return 0
     }
 }
 

@@ -51,13 +51,13 @@ struct MMessage: Hashable, Equatable, MessageType {
     
     init(user: MUser, content: String) {
         self.content = content
-        sender = Sender(senderId: user.id, displayName: user.username)
+        sender = MSender(senderId: user.id, displayName: user.username)
         sentDate = Date()
         id = nil
     }
     
     init(user: MUser, image: UIImage) {
-        sender = Sender(senderId: user.id, displayName: user.username)
+        sender = MSender(senderId: user.id, displayName: user.username)
         self.image = image
         content = ""
         sentDate = Date()
@@ -73,7 +73,7 @@ struct MMessage: Hashable, Equatable, MessageType {
         
         self.id = document.documentID
         self.sentDate = sentDate.dateValue()
-        sender = Sender(senderId: senderId, displayName: senderName)
+        sender = MSender(senderId: senderId, displayName: senderName)
         
         if let content = data["content"] as? String {
             self.content = content

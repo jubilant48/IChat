@@ -60,9 +60,9 @@ final class ProfileViewController: UIViewController {
         let keyboardInfo = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue
         let keyboardSize = keyboardInfo.cgRectValue.size
         
-        let difference = -keyboardSize.height + 20
+        let difference = -keyboardSize.height + 30
         
-        UIView.animate(withDuration: 0.1) {
+        UIView.animate(withDuration: 0.015) {
             self.containerView.transform = CGAffineTransform(translationX: self.containerView.frame.origin.x, y: difference)
         }
     }

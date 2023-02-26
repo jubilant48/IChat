@@ -69,6 +69,7 @@ final class LoginViewController: UIViewController {
         let difference = keyboardSize.height - (self.view.frame.height - stackView.frame.origin.y - stackView.frame.size.height)
         
         let scrollPoint = CGPointMake(0, difference)
+        
         self.scrollView.setContentOffset(scrollPoint, animated: true)
     }
     
@@ -135,6 +136,10 @@ final class LoginViewController: UIViewController {
     // MARK: Methods
     
     private func configureElements() {
+        // Configure scrollView
+        scrollView.alwaysBounceVertical = true
+        scrollView.keyboardDismissMode = .onDrag
+        
         // Configure welcomeLabel
         welcomeLabel.textAlignment = .center
         

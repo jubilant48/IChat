@@ -147,6 +147,10 @@ final class SetupProfileViewController: UIViewController {
     }
     
     private func customizeElements() {
+        // Configure scrollView
+        scrollView.alwaysBounceVertical = true
+        scrollView.keyboardDismissMode = .onDrag
+        
         // Configure welcomeLabel
         welcomeLabel.textAlignment = .center
         
