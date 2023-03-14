@@ -87,7 +87,7 @@ final class ListenerService {
         return chatsListener
     }
     
-    func activeChatsObserve(chats: [MChat], completion: @escaping (Result<[MChat], Error>) -> Void) -> ListenerRegistration?{
+    func activeChatsObserve(chats: [MChat], completion: @escaping (Result<[MChat], Error>) -> Void) -> ListenerRegistration? {
         var chats = chats
         
         let chatsReference = database.collection(["users", currentUserId, "activeChats"].joined(separator: "/"))

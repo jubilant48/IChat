@@ -14,7 +14,7 @@ final class ChatsViewController: MessagesViewController {
     // MARK: Properties
     
     private let user: MUser
-    private let chat: MChat
+    private var chat: MChat
     
     private var messages: [MMessage] = []
     private var messageListener: ListenerRegistration?
@@ -47,47 +47,10 @@ final class ChatsViewController: MessagesViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        // TODO: put to into a function
         configureMessageInputBar()
+        configureMessagesCollectionView()
         
-        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
-            layout.textMessageSizeCalculator.outgoingAvatarSize = .zero
-            layout.textMessageSizeCalculator.incomingAvatarSize = .zero
-            layout.photoMessageSizeCalculator.incomingAvatarSize = .zero
-            layout.photoMessageSizeCalculator.outgoingAvatarSize = .zero
-        }
-        
-        messagesCollectionView.backgroundColor = .getBackgroundAppColor()
-        messageInputBar.delegate = self
-        messagesCollectionView.messagesDataSource = self
-        messagesCollectionView.messagesLayoutDelegate = self
-        messagesCollectionView.messagesDisplayDelegate = self
-        
-        self.messagesCollectionView.showsVerticalScrollIndicator = false
-        
-        messageListener = ListenerService.shared.messagesObserve(chat: chat) { result  in
-            switch result {
-            case .success(var message):
-                if let url = message.downloadURL {
-                    StorageService.shared.downloadImage(url: url) { [weak self] result in
-                        guard let self = self else { return }
-                        
-                        switch result {
-                        case .success(let image):
-                            message.image = image
-                            self.insertNewMessage(message: message)
-                        case .failure(let error):
-                            self.showAlert(with: "Ошибка", and: error.localizedDescription)
-                        }
-                    }
-                } else {
-                    self.insertNewMessage(message: message, animated: true)
-                }
-            case .failure(let error):
-                self.showAlert(with: "Ошибка", and: error.localizedDescription)
-            }
-        }
-        
+        addListeners()
     }
     
     // MARK: Actions
@@ -129,13 +92,48 @@ final class ChatsViewController: MessagesViewController {
     
     // MARK: Methods
     
-    private func insertNewMessage(message: MMessage, animated: Bool = false) {
+    private func addListeners() {
+        messageListener = ListenerService.shared.messagesObserve(chat: chat) { result  in
+            switch result {
+            case .success(var message):
+                if let url = message.downloadURL {
+                    StorageService.shared.downloadImage(url: url) { [weak self] result in
+                        guard let self = self else { return }
+                        
+                        switch result {
+                        case .success(let image):
+                            message.image = image
+                            self.insertNewMessage(message: message, isImage: true)
+                        case .failure(let error):
+                            self.showAlert(with: "Ошибка", and: error.localizedDescription)
+                        }
+                    }
+                } else {
+                    self.insertNewMessage(message: message)
+                }
+            case .failure(let error):
+                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func insertNewMessage(message: MMessage, isImage: Bool = false) {
         guard !messages.contains(message) else { return }
         messages.append(message)
         messages.sort()
-
+    
+        if chat.lastMessageDate < message.sentDate {
+            if isImage {
+                FirestoreService.shared.updateLastMessageFor(chat: self.chat, message: "Изображение 🖼", lastDate: message.sentDate)
+                chat.lastMessageDate = message.sentDate
+            } else {
+                FirestoreService.shared.updateLastMessageFor(chat: self.chat, message: message.content, lastDate: message.sentDate)
+                chat.lastMessageDate = message.sentDate
+            }
+        }
+        
         messagesCollectionView.reloadData()
-        self.messagesCollectionView.scrollToLastItem(animated: animated)
+        self.messagesCollectionView.scrollToLastItem(animated: true)
     }
     
     private func sendImage(image: UIImage) {
@@ -160,10 +158,38 @@ final class ChatsViewController: MessagesViewController {
     
 }
 
+// MARK: - Configure message collection view
+
+extension ChatsViewController {
+    private func configureMessagesCollectionView() {
+        // Configure messages collections view
+        messagesCollectionView.backgroundColor = .getBackgroundAppColor()
+        messagesCollectionView.showsVerticalScrollIndicator = false
+        
+        setupLayoutMessageCollectionView()
+        
+        // Adding delegates
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+    }
+    
+    private func setupLayoutMessageCollectionView() {
+        if let layout = messagesCollectionView.collectionViewLayout as? MessagesCollectionViewFlowLayout {
+            layout.textMessageSizeCalculator.outgoingAvatarSize = .zero
+            layout.textMessageSizeCalculator.incomingAvatarSize = .zero
+            layout.photoMessageSizeCalculator.incomingAvatarSize = .zero
+            layout.photoMessageSizeCalculator.outgoingAvatarSize = .zero
+        }
+    }
+}
+
 // MARK: - Configure message text field
 
 extension ChatsViewController {
     private func configureMessageInputBar() {
+        messageInputBar.delegate = self
+        
         messageInputBar.isTranslucent = true
         messageInputBar.separatorLine.isHidden = true
         messageInputBar.backgroundView.backgroundColor = .getBackgroundAppColor()
@@ -212,11 +238,6 @@ extension ChatsViewController {
         messageInputBar.setStackViewItems([cameraItem], forStack: .left, animated: false)
     }
 }
-
-// MARK: - Navigation controller delegate
-
-extension ChatsViewController: UINavigationControllerDelegate { }
-
 
 // MARK: - Image picker controller delegate
 
@@ -323,5 +344,9 @@ extension ChatsViewController: InputBarAccessoryViewDelegate {
         inputBar.inputTextView.text = ""
     }
 }
+
+// MARK: - Navigation controller delegate
+
+extension ChatsViewController: UINavigationControllerDelegate { }
 
 

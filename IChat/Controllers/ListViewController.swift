@@ -34,7 +34,7 @@ final class ListViewController: UIViewController {
     private var activeChatsListener: ListenerRegistration?
     
     private var collectionView: UICollectionView!
-    var dataSource: UICollectionViewDiffableDataSource<Section, MChat>?
+    private var dataSource: UICollectionViewDiffableDataSource<Section, MChat>?
     
     private let currentUser: MUser
     
@@ -64,36 +64,13 @@ final class ListViewController: UIViewController {
         setupSearchBar()
         setupCollectionView()
         createDataSource()
-        reloadData()
+        addListeners()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        
-        // TODO: Сделать подгрузку из памяти устройства и проверку
-        waitingChatsListener = ListenerService.shared.waitingChatsObserve(chats: waitingChats) { result in
-            switch result {
-            case .success(let chats):
-                if self.waitingChats != [], self.waitingChats.count <= chats.count {
-                    let chatRequestViewController = ChatRequsetViewController(chat: chats.last!)
-                    chatRequestViewController.delegate = self
-                    
-                    self.present(chatRequestViewController, animated: true)
-                }
-                
-                self.waitingChats = chats
-                self.reloadData()
-            case .failure(let error):
-                self.showAlert(with: "Ошибка", and: error.localizedDescription)
-            }
-        }
-        
-        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats) { result in
-            switch result {
-            case .success(let chats):
-                self.activeChats = chats
-                self.reloadData()
-            case .failure(let error):
-                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
-            }
-        }
+        self.reloadData()
     }
     
     // MARK: - Methods
@@ -128,6 +105,45 @@ final class ListViewController: UIViewController {
         collectionView.delegate = self
     }
     
+    private func addWaitingChatsListeners() {
+        waitingChatsListener = ListenerService.shared.waitingChatsObserve(chats: waitingChats) { result in
+            switch result {
+            case .success(let chats):
+                if self.waitingChats != [], self.waitingChats.count <= chats.count {
+                    let chatRequestViewController = ChatRequsetViewController(chat: chats.last!)
+                    chatRequestViewController.delegate = self
+                    
+                    self.present(chatRequestViewController, animated: true)
+                }
+                
+                self.waitingChats = chats
+                self.reloadData()
+            case .failure(let error):
+                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func addActiveChatsListeners() {
+        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats) { result in
+            switch result {
+            case .success(let chats):
+                self.activeChats = chats
+                
+                self.reloadData()
+                self.reloadData()
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
+        }
+    }
+    
+    private func addListeners() {
+        addWaitingChatsListeners()
+        addActiveChatsListeners()
+    }
+    
+    
     private func reloadData() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
 
@@ -135,7 +151,24 @@ final class ListViewController: UIViewController {
 
         snapshot.appendItems(waitingChats, toSection: .waitingChats)
         snapshot.appendItems(activeChats, toSection: .activeChats)
-
+        
+        snapshot.reloadItems(waitingChats)
+        snapshot.reloadItems(activeChats)
+        
+        dataSource?.apply(snapshot, animatingDifferences: true)
+    }
+    
+    private func reloadData(with searchText: String) {
+        let waitingFiltered = waitingChats.filter { $0.contains(filter: searchText) }
+        let activeFiltered = activeChats.filter { $0.contains(filter: searchText) }
+        
+        var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
+        
+        snapshot.appendSections([.waitingChats, .activeChats])
+        
+        snapshot.appendItems(waitingFiltered, toSection: Section.waitingChats)
+        snapshot.appendItems(activeFiltered, toSection: Section.activeChats)
+        
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
@@ -258,7 +291,7 @@ extension ListViewController {
 
 extension ListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchText)
+        reloadData(with: searchText)
     }
 }
 
@@ -282,14 +315,14 @@ extension ListViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - WaitingChatsNavigation
+// MARK: - Waiting chats navigation
 
 extension ListViewController: WaitingChatsNavigation {
     func removeWaitingChat(chat: MChat) {
         FirestoreService.shared.deleteWaitingChat(chat: chat) { result in
             switch result {
             case .success():
-                self.showAlert(with: "Успешно!", and: "Чат с \(chat.friendUsername) был удален.")
+                break
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)
             }
@@ -300,32 +333,10 @@ extension ListViewController: WaitingChatsNavigation {
         FirestoreService.shared.changeToActive(chat: chat) { result in
             switch result {
             case .success():
-                self.showAlert(with: "Успешно!", and: "Приятного общения с \(chat.friendUsername)")
+                break
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
-        }
-    }
-}
-
-// MARK: - Display Canvas
-
-import SwiftUI
-
-struct ListViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: Context) -> some MainTabBarController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         }
     }
 }

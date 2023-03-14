@@ -85,7 +85,7 @@ final class FirestoreService {
         let messageReference = reference.document(self.currentUser.id).collection("messages")
         
         let message = MMessage(user: currentUser, content: message)
-        let chat = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id)
+        let chat = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id, lastMessageDate: message.sentDate)
         
         reference.document(currentUser.id).setData(chat.representation) { error in
             if let error = error {
@@ -209,7 +209,7 @@ final class FirestoreService {
         let friendMessageReference = friendReference.collection("messages")
         let myMessageReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId).collection("messages")
         
-        let chatForFriend = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id)
+        let chatForFriend = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id, lastMessageDate: message.sentDate)
         
         friendReference.setData(chatForFriend.representation) { error in
             if let error = error {
@@ -236,4 +236,20 @@ final class FirestoreService {
         
     }
     
+    func updateLastMessageFor(chat: MChat, message: String, lastDate: Date) {
+        let friendReference = usersReference.document(chat.friendId).collection("activeChats").document(currentUser.id)
+        let myMessageReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId)
+
+        let date = Timestamp(date: lastDate)
+
+        friendReference.updateData([
+            "lastMessage": message,
+            "lastMessageDate": date
+        ])
+
+        myMessageReference.updateData([
+            "lastMessage": message,
+            "lastMessageDate": date
+        ])
+    }
 }
