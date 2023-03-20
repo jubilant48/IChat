@@ -14,6 +14,7 @@ struct MMessage: Hashable, Equatable, MessageType {
     let content: String
     var sentDate: Date
     let id: String?
+    var isViewed: Bool
     
     var sender: MessageKit.SenderType
     var messageId: String {
@@ -36,6 +37,7 @@ struct MMessage: Hashable, Equatable, MessageType {
         var representation: [String: Any] = ["created": sentDate]
         representation["senderID"] = sender.senderId
         representation["senderName"] = sender.displayName
+        representation["isViewed"] = isViewed
         
         if let url = downloadURL {
             representation["url"] = url.absoluteString
@@ -49,19 +51,21 @@ struct MMessage: Hashable, Equatable, MessageType {
     
     // MARK: Init
     
-    init(user: MUser, content: String) {
+    init(user: MUser, content: String, isViewed: Bool) {
         self.content = content
-        sender = MSender(senderId: user.id, displayName: user.username)
-        sentDate = Date()
-        id = nil
+        self.sender = MSender(senderId: user.id, displayName: user.username)
+        self.sentDate = Date()
+        self.id = nil
+        self.isViewed = isViewed
     }
     
-    init(user: MUser, image: UIImage) {
-        sender = MSender(senderId: user.id, displayName: user.username)
+    init(user: MUser, image: UIImage, isViewed: Bool) {
+        self.sender = MSender(senderId: user.id, displayName: user.username)
         self.image = image
-        content = ""
-        sentDate = Date()
-        id = nil
+        self.content = ""
+        self.sentDate = Date()
+        self.id = nil
+        self.isViewed = isViewed
     }
     
     init?(document: QueryDocumentSnapshot) {
@@ -69,11 +73,13 @@ struct MMessage: Hashable, Equatable, MessageType {
         
         guard let sentDate = data["created"] as? Timestamp,
               let senderId = data["senderID"] as? String,
-              let senderName = data["senderName"] as? String else { return nil }
+              let senderName = data["senderName"] as? String,
+              let isViewed = data["isViewed"] as? Bool else { return nil }
         
         self.id = document.documentID
         self.sentDate = sentDate.dateValue()
-        sender = MSender(senderId: senderId, displayName: senderName)
+        self.sender = MSender(senderId: senderId, displayName: senderName)
+        self.isViewed = isViewed
         
         if let content = data["content"] as? String {
             self.content = content

@@ -13,7 +13,6 @@ final class ListenerService {
     // MARK: Properties
     
     static let shared = ListenerService()
-    
     private let database = Firestore.firestore()
     
     private var usersReference: CollectionReference {

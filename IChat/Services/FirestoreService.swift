@@ -84,7 +84,7 @@ final class FirestoreService {
         let reference = database.collection(["users", receiver.id, "waitingChats"].joined(separator: "/"))
         let messageReference = reference.document(self.currentUser.id).collection("messages")
         
-        let message = MMessage(user: currentUser, content: message)
+        let message = MMessage(user: currentUser, content: message, isViewed: false)
         let chat = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id, lastMessageDate: message.sentDate)
         
         reference.document(currentUser.id).setData(chat.representation) { error in
@@ -236,7 +236,7 @@ final class FirestoreService {
         
     }
     
-    func updateLastMessageFor(chat: MChat, message: String, lastDate: Date) {
+    func updateLastMessage(for chat: MChat, message: String, lastDate: Date) {
         let friendReference = usersReference.document(chat.friendId).collection("activeChats").document(currentUser.id)
         let myMessageReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId)
 
@@ -250,6 +250,14 @@ final class FirestoreService {
         myMessageReference.updateData([
             "lastMessage": message,
             "lastMessageDate": date
+        ])
+    }
+    
+    func updateViewedMessage(for senderId: String, friendId: String) {
+        let messageReference = usersReference.document(currentUser.id).collection("activeChats").document(friendId).collection("messages").document(senderId)
+        
+        messageReference.updateData([
+            "isViewed": true
         ])
     }
 }

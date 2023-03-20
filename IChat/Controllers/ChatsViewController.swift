@@ -93,7 +93,7 @@ final class ChatsViewController: MessagesViewController {
     // MARK: Methods
     
     private func addListeners() {
-        messageListener = ListenerService.shared.messagesObserve(chat: chat) { result  in
+        messageListener = ListenerService.shared.messagesObserve(chat: chat) { [weak self] result in
             switch result {
             case .success(var message):
                 if let url = message.downloadURL {
@@ -103,16 +103,17 @@ final class ChatsViewController: MessagesViewController {
                         switch result {
                         case .success(let image):
                             message.image = image
+                            
                             self.insertNewMessage(message: message, isImage: true)
                         case .failure(let error):
                             self.showAlert(with: "Ошибка", and: error.localizedDescription)
                         }
                     }
                 } else {
-                    self.insertNewMessage(message: message)
+                    self?.insertNewMessage(message: message)
                 }
             case .failure(let error):
-                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+                self?.showAlert(with: "Ошибка", and: error.localizedDescription)
             }
         }
     }
@@ -121,35 +122,44 @@ final class ChatsViewController: MessagesViewController {
         guard !messages.contains(message) else { return }
         messages.append(message)
         messages.sort()
-    
+        
         if chat.lastMessageDate < message.sentDate {
             if isImage {
-                FirestoreService.shared.updateLastMessageFor(chat: self.chat, message: "Изображение 🖼", lastDate: message.sentDate)
+                FirestoreService.shared.updateLastMessage(for: self.chat, message: "Изображение 🖼", lastDate: message.sentDate)
                 chat.lastMessageDate = message.sentDate
             } else {
-                FirestoreService.shared.updateLastMessageFor(chat: self.chat, message: message.content, lastDate: message.sentDate)
+                FirestoreService.shared.updateLastMessage(for: self.chat, message: message.content, lastDate: message.sentDate)
                 chat.lastMessageDate = message.sentDate
             }
         }
         
         messagesCollectionView.reloadData()
-        self.messagesCollectionView.scrollToLastItem(animated: true)
+        
+        if message.isViewed {
+            self.messagesCollectionView.scrollToLastItem(animated: false)
+        } else  {
+            self.messagesCollectionView.scrollToLastItem(animated: true)
+            FirestoreService.shared.updateViewedMessage(for: message.messageId, friendId: self.chat.friendId)
+        }
     }
     
     private func sendImage(image: UIImage) {
         StorageService.shared.uploadImageMessage(photo: image, to: chat) { result in
             switch result {
             case .success(let url):
-                var message = MMessage(user: self.user, image: image)
+                var message = MMessage(user: self.user, image: image, isViewed: false)
                 message.downloadURL = url
+                
                 FirestoreService.shared.sendMessage(chat: self.chat, message: message) { result in
                     switch result {
                     case .success():
                         self.messagesCollectionView.scrollToLastItem()
+                        FirestoreService.shared.updateViewedMessage(for: message.messageId, friendId: self.chat.friendId)
                     case .failure(_):
                         self.showAlert(with: "Ошибка", and: "Изображение не доставлено")
                     }
                 }
+                
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)
             }
@@ -332,11 +342,12 @@ extension ChatsViewController: MessagesDisplayDelegate {
 
 extension ChatsViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
-        let message = MMessage(user: user, content: text)
+        let message = MMessage(user: user, content: text, isViewed: false)
         FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
             switch result {
             case .success():
                 self.messagesCollectionView.scrollToLastItem()
+                FirestoreService.shared.updateViewedMessage(for: message.messageId, friendId: self.chat.friendId)
             case .failure(let error):
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)
             }

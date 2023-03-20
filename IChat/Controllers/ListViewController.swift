@@ -119,7 +119,7 @@ final class ListViewController: UIViewController {
                 self.waitingChats = chats
                 self.reloadData()
             case .failure(let error):
-                self.showAlert(with: "Ошибка", and: error.localizedDescription)
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
             }
         }
     }
