@@ -269,9 +269,36 @@ extension PeopleViewController: UISearchBarDelegate {
 extension PeopleViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let user = self.dataSource.itemIdentifier(for: indexPath) else { return }
-        let profileViewController = ProfileViewController(user: user)
+        var isContinue = true
         
-        present(profileViewController, animated: true)
+        FirestoreService.shared.checkExistenceWaitingChat(for: user) { result in
+            switch result {
+            case .success(_):
+                let profileViewController = ProfileViewController(user: user, state: .withMessage)
+                isContinue = false
+                self.present(profileViewController, animated: true)
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
+        }
+        
+        FirestoreService.shared.checkExistenceActiveChat(for: user) { result in
+            switch result {
+            case .success(_):
+                let profileViewController = ProfileViewController(user: user, state: .withButton)
+                isContinue = false
+                self.present(profileViewController, animated: true)
+            case .failure(let error):
+                self.showAlert(with: "Ошибка!", and: error.localizedDescription)
+            }
+        }
+        
+        delayWithSeconds(0.3) {
+            if isContinue {
+                let profileViewController = ProfileViewController(user: user, state: .withTextField)
+                self.present(profileViewController, animated: true)
+            }
+        }
     }
 }
 

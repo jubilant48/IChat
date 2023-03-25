@@ -9,24 +9,37 @@ import UIKit
 import SDWebImage
 
 final class ProfileViewController: UIViewController {
+    // MARK: Enumeration
+    
+    enum State {
+        case withTextField
+        case withMessage
+        case withButton
+    }
+    
     // MARK: Properties
+    
+    private let state: State
     
     private let containerView = UIView()
     private let imageView = UIImageView(image: UIImage(named: "Img7"), contentMode: .scaleAspectFill)
     private let nameLabel = UILabel(text: "Peter Ben", font: .systemFont(ofSize: 20, weight: .light))
     private let aboutMeLabel = UILabel(text: "You have the opporttunity to chat with the best man in  the world!", font: .systemFont(ofSize: 16, weight: .light))
-    private let myTextField = InsertableTextField()
     
+    private lazy var myTextField = InsertableTextField()
+    private lazy var requestLabel = UILabel(text: "Запрос отправлен!", font: .systemFont(ofSize: 20, weight: .light))
+    private lazy var chatButton = UIButton(title: "Перейти к чату", titleColor: .white, backgroundColor: .black, font: .laoSangamMN20(), isShadow: false, cornerRadius: 10)
     
     private let user: MUser
     
     // MARK: Init
     
-    init(user: MUser) {
+    init(user: MUser, state: State) {
         self.user = user
         self.nameLabel.text = user.username
         self.aboutMeLabel.text = user.description
         self.imageView.sd_setImage(with: URL(string: user.avatarStringUrl))
+        self.state = state
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,6 +64,12 @@ final class ProfileViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        chatButton.applyGradients(cornerRadius: 10)
     }
     
     // MARK: Actions
@@ -103,12 +122,27 @@ final class ProfileViewController: UIViewController {
         aboutMeLabel.translatesAutoresizingMaskIntoConstraints = false
         aboutMeLabel.numberOfLines = 0
         
-        //Configure myTextField
-        myTextField.translatesAutoresizingMaskIntoConstraints = false
-        myTextField.delegate = self
-        
-        if let button = myTextField.rightView as? UIButton {
-            button.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+        // Configure state element
+        switch state {
+        case .withTextField:
+            //Configure myTextField
+            myTextField.translatesAutoresizingMaskIntoConstraints = false
+            myTextField.delegate = self
+            
+            if let button = myTextField.rightView as? UIButton {
+                button.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+            }
+        case .withMessage:
+            // Configure requestLabel
+            requestLabel.translatesAutoresizingMaskIntoConstraints = false
+            requestLabel.textAlignment = .center
+            requestLabel.layer.masksToBounds = true
+            requestLabel.layer.cornerRadius = 10
+            requestLabel.backgroundColor = .getGrayColor()
+        case .withButton:
+            // Configure chatButton
+            chatButton.translatesAutoresizingMaskIntoConstraints = false
+            chatButton.applyGradients(cornerRadius: 10)
         }
         
         // Configure containerView
@@ -127,7 +161,16 @@ extension ProfileViewController {
         view.addSubview(containerView)
         containerView.addSubview(nameLabel)
         containerView.addSubview(aboutMeLabel)
-        containerView.addSubview(myTextField)
+        
+        switch state {
+        case .withTextField:
+            containerView.addSubview(myTextField)
+        case .withMessage:
+            containerView.addSubview(requestLabel)
+        case .withButton:
+            containerView.addSubview(chatButton)
+        }
+        
         
         // Setup constraints
         NSLayoutConstraint.activate([
@@ -156,11 +199,22 @@ extension ProfileViewController {
             aboutMeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant:  -24)
         ])
         
+        switch state {
+        case .withTextField:
+            setConstraints(for: myTextField)
+        case .withMessage:
+            setConstraints(for: requestLabel)
+        case .withButton:
+            setConstraints(for: chatButton)
+        }
+    }
+    
+    private func setConstraints(for view: UIView) {
         NSLayoutConstraint.activate([
-            myTextField.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 8),
-            myTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
-            myTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant:  -24),
-            myTextField.heightAnchor.constraint(equalToConstant: 48)
+            view.topAnchor.constraint(equalTo: aboutMeLabel.bottomAnchor, constant: 25),
+            view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 24),
+            view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant:  -24),
+            view.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
 }

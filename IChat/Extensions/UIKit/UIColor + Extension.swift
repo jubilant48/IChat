@@ -33,6 +33,10 @@ extension UIColor {
         return #colorLiteral(red: 0.2392156863, green: 0.2392156863, blue: 0.2392156863, alpha: 1)
     }
     
+    static func getGrayColor() -> UIColor {
+        return #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+    }
+    
     static func getBackgroundAppColor() -> UIColor {
         return UIColor(named: "backgroundApp")!
     }

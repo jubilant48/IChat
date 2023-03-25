@@ -236,6 +236,42 @@ final class FirestoreService {
         
     }
     
+    func checkExistenceWaitingChat(for user: MUser, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let friendReference = usersReference.document(user.id).collection("waitingChats").document(currentUser.id)
+        
+        friendReference.getDocument { document, error in
+            if let document = document, document.exists {
+                guard let _ = MChat(document: document) else {
+                    return
+                }
+                
+                completion(.success(true))
+            }
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func checkExistenceActiveChat(for user: MUser, completion: @escaping (Result<Bool, Error>) -> Void) {
+        let userReference = usersReference.document(currentUser.id).collection("activeChats").document(user.id)
+        
+        userReference.getDocument { document, error in
+            if let document = document, document.exists {
+                guard let _ = MChat(document: document) else {
+                    return
+                }
+                
+                completion(.success(true))
+            }
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func updateLastMessage(for chat: MChat, message: String, lastDate: Date) {
         let friendReference = usersReference.document(chat.friendId).collection("activeChats").document(currentUser.id)
         let myMessageReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId)

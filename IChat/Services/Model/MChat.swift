@@ -38,6 +38,23 @@ struct MChat: Hashable, Decodable {
         self.friendId = friendId
     }
     
+    init?(document: DocumentSnapshot) {
+        guard let data = document.data() else { return nil }
+        
+        guard let friendUsername = data["friendUsername"] as? String,
+              let friendAvatarStringURL = data["friendAvatarStringURL"] as? String,
+              let friendId = data["friendId"] as? String,
+              let lastMessageContent = data["lastMessage"] as? String,
+              let lastMessageDate = data["lastMessageDate"] as? Timestamp else { return nil }
+        // let lastMessageDate = data["lastMessageDate"] as? Timestamp
+        
+        self.friendUsername = friendUsername
+        self.friendAvatarStringURL = friendAvatarStringURL
+        self.friendId = friendId
+        self.lastMessageContent = lastMessageContent
+        self.lastMessageDate = lastMessageDate.dateValue()
+    }
+    
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
         

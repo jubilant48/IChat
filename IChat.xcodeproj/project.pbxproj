@@ -63,6 +63,7 @@
 		FAEFAE0C296B4C0E009C7B45 /* ChatRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEFAE0B296B4C0E009C7B45 /* ChatRequestViewController.swift */; };
 		FAF394012982F1DC00A052F7 /* ChatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF394002982F1DC00A052F7 /* ChatsViewController.swift */; };
 		FAF394032983182300A052F7 /* UIScrollView + Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF394022983182300A052F7 /* UIScrollView + Extension .swift */; };
+		FAF7D67029CF5B6E0062FEC7 /* ChatError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF7D66F29CF5B6E0062FEC7 /* ChatError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +127,7 @@
 		FAEFAE0B296B4C0E009C7B45 /* ChatRequestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRequestViewController.swift; sourceTree = "<group>"; };
 		FAF394002982F1DC00A052F7 /* ChatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsViewController.swift; sourceTree = "<group>"; };
 		FAF394022983182300A052F7 /* UIScrollView + Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView + Extension .swift"; sourceTree = "<group>"; };
+		FAF7D66F29CF5B6E0062FEC7 /* ChatError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +205,7 @@
 				FA2B77FE296F490E0084D1BD /* Validators.swift */,
 				FA2B7800296F4B0A0084D1BD /* AuthError.swift */,
 				FAA1E3A32973357500EFDC05 /* UserError.swift */,
+				FAF7D66F29CF5B6E0062FEC7 /* ChatError.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				FA2B77FF296F490E0084D1BD /* Validators.swift in Sources */,
 				FAEFAE08296B34F6009C7B45 /* InsertableTextField.swift in Sources */,
 				FA4F461D2986E153003EBF36 /* ImageItem.swift in Sources */,
+				FAF7D67029CF5B6E0062FEC7 /* ChatError.swift in Sources */,
 				FAA1A7542950CBB800FD9C1D /* SignUpViewController.swift in Sources */,
 				FA1ED8CF295CCE8300403B3D /* ActiveChatCell.swift in Sources */,
 				FA6CC5F7294A5961001B5CC3 /* UIFont + Extension.swift in Sources */,
