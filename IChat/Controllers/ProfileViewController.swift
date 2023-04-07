@@ -9,7 +9,7 @@ import UIKit
 import SDWebImage
 
 final class ProfileViewController: UIViewController {
-    // MARK: Enumeration
+    // MARK: - Enumeration
     
     enum State {
         case withTextField
@@ -17,9 +17,9 @@ final class ProfileViewController: UIViewController {
         case withButton
     }
     
-    // MARK: Properties
+    // MARK: - Properties
     
-    private let state: State
+    weak var delegate: ProfileNavigation?
     
     private let containerView = UIView()
     private let imageView = UIImageView(image: UIImage(named: "Img7"), contentMode: .scaleAspectFill)
@@ -27,12 +27,13 @@ final class ProfileViewController: UIViewController {
     private let aboutMeLabel = UILabel(text: "You have the opporttunity to chat with the best man in  the world!", font: .systemFont(ofSize: 16, weight: .light))
     
     private lazy var myTextField = InsertableTextField()
-    private lazy var requestLabel = UILabel(text: "Запрос отправлен!", font: .systemFont(ofSize: 20, weight: .light))
-    private lazy var chatButton = UIButton(title: "Перейти к чату", titleColor: .white, backgroundColor: .black, font: .laoSangamMN20(), isShadow: false, cornerRadius: 10)
+    private lazy var requestLabel = UILabel(text: "Запрос отправлен!", font: .systemFont(ofSize: 18, weight: .light))
+    private lazy var chatButton = UIButton(title: "К сообщениям", titleColor: .white, backgroundColor: .black, font: .laoSangamMN20(), isShadow: false, cornerRadius: 10)
     
     private let user: MUser
+    private let state: State
     
-    // MARK: Init
+    // MARK: - Init
     
     init(user: MUser, state: State) {
         self.user = user
@@ -48,7 +49,7 @@ final class ProfileViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,10 +70,12 @@ final class ProfileViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        chatButton.applyGradients(cornerRadius: 10)
+        if state == .withButton {
+            chatButton.applyGradients(cornerRadius: 10)
+        }
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @objc func keyboardWillAppear(notification: NSNotification) {
         let userInfo: NSDictionary = notification.userInfo! as NSDictionary
@@ -89,6 +92,22 @@ final class ProfileViewController: UIViewController {
     @objc private func keyboardDisappear(notification: NSNotification) {
         UIView.animate(withDuration: 2.0) {
             self.containerView.transform = CGAffineTransform.identity
+        }
+    }
+    
+    @objc private func openChat() {
+        dismiss(animated: true) {
+            FirestoreService.shared.getChat(for: self.user.id) { result in
+                switch result {
+                case .success(let chat):
+                    self.delegate?.show(chat, for: self.user)
+                case .failure(let error):
+                    let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    let viewController = scene!.windows[0].rootViewController
+                    
+                    UIApplication.getTopViewController(base: viewController)?.showAlert(with: "Ошибка", and: error.localizedDescription)
+                }
+            }
         }
     }
     
@@ -109,7 +128,7 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     private func customizeElement() {
         // Configure imageView
@@ -138,11 +157,13 @@ final class ProfileViewController: UIViewController {
             requestLabel.textAlignment = .center
             requestLabel.layer.masksToBounds = true
             requestLabel.layer.cornerRadius = 10
-            requestLabel.backgroundColor = .getGrayColor()
+            requestLabel.backgroundColor = .getHeaderGrayColor()
         case .withButton:
             // Configure chatButton
             chatButton.translatesAutoresizingMaskIntoConstraints = false
             chatButton.applyGradients(cornerRadius: 10)
+            
+            chatButton.addTarget(self, action: #selector(openChat), for: .touchUpInside)
         }
         
         // Configure containerView

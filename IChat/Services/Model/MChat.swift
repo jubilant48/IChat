@@ -11,6 +11,9 @@ import FirebaseFirestore
 struct MChat: Hashable, Decodable {
     // MARK: Properties
     
+    static let waitingPlugModel = MChat(friendUsername: "nil", friendAvatarStringURL: "0", lastMessageContent: "nil", friendId: "0", lastMessageDate: Date())
+    static let activePlugModel = MChat(friendUsername: "nil", friendAvatarStringURL: "1", lastMessageContent: "nil", friendId: "1", lastMessageDate: Date())
+    
     var friendUsername: String
     var friendAvatarStringURL: String
     var lastMessageContent: String
@@ -30,7 +33,6 @@ struct MChat: Hashable, Decodable {
     // MARK: Init
     
     init(friendUsername: String, friendAvatarStringURL: String, lastMessageContent: String, friendId: String, lastMessageDate: Date) {
-        // lastMessageDate: Date
         self.friendUsername = friendUsername
         self.friendAvatarStringURL = friendAvatarStringURL
         self.lastMessageContent = lastMessageContent
@@ -46,7 +48,6 @@ struct MChat: Hashable, Decodable {
               let friendId = data["friendId"] as? String,
               let lastMessageContent = data["lastMessage"] as? String,
               let lastMessageDate = data["lastMessageDate"] as? Timestamp else { return nil }
-        // let lastMessageDate = data["lastMessageDate"] as? Timestamp
         
         self.friendUsername = friendUsername
         self.friendAvatarStringURL = friendAvatarStringURL
@@ -63,7 +64,6 @@ struct MChat: Hashable, Decodable {
               let friendId = data["friendId"] as? String,
               let lastMessageContent = data["lastMessage"] as? String,
               let lastMessageDate = data["lastMessageDate"] as? Timestamp else { return nil }
-        // let lastMessageDate = data["lastMessageDate"] as? Timestamp
         
         self.friendUsername = friendUsername
         self.friendAvatarStringURL = friendAvatarStringURL

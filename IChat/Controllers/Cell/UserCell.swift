@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-final class UserCell: UICollectionViewCell, SelfCongiguringCell {
+final class UserCell: UICollectionViewCell {
     // MARK: Properties
     
     static var reuseId: String = "UserCell"
@@ -48,18 +48,6 @@ final class UserCell: UICollectionViewCell, SelfCongiguringCell {
     
     override func prepareForReuse() {
         userImageView.image = nil
-    }
-    
-    // MARK: Methods
-    
-    func configure<U>(with value: U) where U : Hashable {
-        guard let user: MUser = value as? MUser else {
-            fatalError("Unknown model object")
-        }
-        userName.text = user.username
-        
-        guard let url = URL(string: user.avatarStringUrl) else { return }
-        userImageView.sd_setImage(with: url, completed: nil)
     }
 }
 
@@ -107,5 +95,19 @@ extension UserCell {
         ])
         
         
+    }
+}
+
+// MARK: - Self congiguring cell
+
+extension UserCell: SelfCongiguringCell {
+    func configure<U>(with value: U) where U : Hashable {
+        guard let user: MUser = value as? MUser else {
+            fatalError("Unknown model object")
+        }
+        userName.text = user.username
+        
+        guard let url = URL(string: user.avatarStringUrl) else { return }
+        userImageView.sd_setImage(with: url, completed: nil)
     }
 }

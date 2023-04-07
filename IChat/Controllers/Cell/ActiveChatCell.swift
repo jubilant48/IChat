@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ActiveChatCell: UICollectionViewCell, SelfCongiguringCell {
+final class ActiveChatCell: UICollectionViewCell {
     // MARK: Property
     
     static var reuseId: String = "ActiveChatCell"
@@ -31,17 +31,6 @@ final class ActiveChatCell: UICollectionViewCell, SelfCongiguringCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Methods
-    
-    func configure<U>(with value: U) where U : Hashable {
-        guard let chat: MChat = value as? MChat else {
-            fatalError("Unknown model object")
-        }
-        friendName.text = chat.friendUsername
-        lastMessage.text = chat.lastMessageContent
-        friendImageView.sd_setImage(with: URL(string: chat.friendAvatarStringURL))
     }
 }
 
@@ -96,5 +85,18 @@ extension ActiveChatCell {
             gradientView.heightAnchor.constraint(equalToConstant: 78),
             gradientView.widthAnchor.constraint(equalToConstant: 8)
         ])
+    }
+}
+
+// MARK: - Self congiguring cell
+
+extension ActiveChatCell: SelfCongiguringCell {
+    func configure<U>(with value: U) where U : Hashable {
+        guard let chat: MChat = value as? MChat else {
+            fatalError("Unknown model object")
+        }
+        friendName.text = chat.friendUsername
+        lastMessage.text = chat.lastMessageContent
+        friendImageView.sd_setImage(with: URL(string: chat.friendAvatarStringURL))
     }
 }

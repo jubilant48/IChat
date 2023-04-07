@@ -25,5 +25,3 @@ extension UIApplication {
         return base
     }
 }
-
-// UIApplication.shared.keyWindow?.rootViewController = AuthViewController()

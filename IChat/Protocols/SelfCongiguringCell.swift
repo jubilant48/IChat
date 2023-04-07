@@ -7,8 +7,14 @@
 
 import UIKit
 
+// MARK: - Protocol
+
 protocol SelfCongiguringCell {
+    // MARK: - Properties
+    
     static var reuseId: String { get }
+    
+    // MARK: - Methods
     
     func configure<U: Hashable>(with value: U)
 }

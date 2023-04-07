@@ -259,9 +259,7 @@ final class FirestoreService {
         
         userReference.getDocument { document, error in
             if let document = document, document.exists {
-                guard let _ = MChat(document: document) else {
-                    return
-                }
+                guard let _ = MChat(document: document) else { return }
                 
                 completion(.success(true))
             }
@@ -295,5 +293,21 @@ final class FirestoreService {
         messageReference.updateData([
             "isViewed": true
         ])
+    }
+    
+    func getChat(for id: String, completion: @escaping (Result<MChat, Error>) -> Void) {
+        let chatReference = usersReference.document(currentUser.id).collection("activeChats").document(id)
+        
+        chatReference.getDocument { document, error in
+            if let document = document, document.exists {
+                guard let chat = MChat(document: document) else { return }
+                
+                completion(.success(chat))
+            }
+            
+            if let error = error {
+                completion(.failure(error))
+            }
+        }
     }
 }

@@ -11,6 +11,11 @@ import FirebaseFirestore
 final class ListViewController: UIViewController {
     // MARK: - Enumerations
     
+    enum Layout {
+        case filled
+        case empty
+    }
+    
     enum Section: Int, CaseIterable {
         case waitingChats
         case activeChats
@@ -29,6 +34,29 @@ final class ListViewController: UIViewController {
     
     private var activeChats = [MChat]()
     private var waitingChats = [MChat]()
+    
+    private var waitingLayout: Layout = .filled
+    private var isEmptyWaitingChats: Bool = false {
+        willSet {
+            switch newValue {
+            case true:
+                waitingLayout = .empty
+            case false:
+                waitingLayout = .filled
+            }
+        }
+    }
+    private var activeLayout: Layout = .filled
+    private var isEmptyActiveChats: Bool = false {
+        willSet {
+            switch newValue {
+            case true:
+                activeLayout = .empty
+            case false:
+                activeLayout = .filled
+            }
+        }
+    }
     
     private var waitingChatsListener: ListenerRegistration?
     private var activeChatsListener: ListenerRegistration?
@@ -98,8 +126,9 @@ final class ListViewController: UIViewController {
         view.addSubview(collectionView)
         
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.reuseId)
-        
+        collectionView.register(ActivePlugCell.self, forCellWithReuseIdentifier: ActivePlugCell.reuseId)
         collectionView.register(ActiveChatCell.self, forCellWithReuseIdentifier: ActiveChatCell.reuseId)
+        collectionView.register(WaitingPlugCell.self, forCellWithReuseIdentifier: WaitingPlugCell.reuseId)
         collectionView.register(WaitingChatCell.self, forCellWithReuseIdentifier: WaitingChatCell.reuseId)
         
         collectionView.delegate = self
@@ -117,6 +146,8 @@ final class ListViewController: UIViewController {
                 }
                 
                 self.waitingChats = chats
+                self.isEmptyWaitingChats = self.waitingChats.isEmpty
+                
                 self.reloadData()
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
@@ -129,6 +160,7 @@ final class ListViewController: UIViewController {
             switch result {
             case .success(let chats):
                 self.activeChats = chats
+                self.isEmptyActiveChats = self.activeChats.isEmpty
                 
                 self.reloadData()
                 self.reloadData()
@@ -143,14 +175,24 @@ final class ListViewController: UIViewController {
         addActiveChatsListeners()
     }
     
-    
     private func reloadData() {
         var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
 
         snapshot.appendSections([.waitingChats, .activeChats])
-
-        snapshot.appendItems(waitingChats, toSection: .waitingChats)
-        snapshot.appendItems(activeChats, toSection: .activeChats)
+    
+        switch waitingLayout {
+        case .filled:
+            snapshot.appendItems(waitingChats, toSection: .waitingChats)
+        case .empty:
+            snapshot.appendItems([MChat.waitingPlugModel], toSection: .waitingChats)
+        }
+        
+        switch activeLayout {
+        case .filled:
+            snapshot.appendItems(activeChats, toSection: .activeChats)
+        case .empty:
+            snapshot.appendItems([MChat.activePlugModel], toSection: .activeChats)
+        }
         
         snapshot.reloadItems(waitingChats)
         snapshot.reloadItems(activeChats)
@@ -163,11 +205,22 @@ final class ListViewController: UIViewController {
         let activeFiltered = activeChats.filter { $0.contains(filter: searchText) }
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, MChat>()
-        
+
         snapshot.appendSections([.waitingChats, .activeChats])
-        
-        snapshot.appendItems(waitingFiltered, toSection: Section.waitingChats)
-        snapshot.appendItems(activeFiltered, toSection: Section.activeChats)
+
+        switch waitingLayout {
+        case .filled:
+            snapshot.appendItems(waitingFiltered, toSection: .waitingChats)
+        case .empty:
+            snapshot.appendItems([MChat.waitingPlugModel], toSection: .waitingChats)
+        }
+
+        switch activeLayout {
+        case .filled:
+            snapshot.appendItems(activeFiltered, toSection: .activeChats)
+        case .empty:
+            snapshot.appendItems([MChat.activePlugModel], toSection: .activeChats)
+        }
         
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
@@ -184,9 +237,20 @@ extension ListViewController {
             
             switch section {
             case .activeChats:
-                return self.configure(collectionView: collectionView, cellType: ActiveChatCell.self, with: chat, for: indexPath)
+                switch self.activeLayout {
+                case .filled:
+                    return self.configure(collectionView: collectionView, cellType: ActiveChatCell.self, with: chat, for: indexPath)
+                case .empty:
+                    return self.configure(collectionView: collectionView, cellType: ActivePlugCell.self, with: "is Empty", for: indexPath)
+                }
+                
             case .waitingChats:
-                return self.configure(collectionView: collectionView, cellType: WaitingChatCell.self, with: chat, for: indexPath)
+                switch self.waitingLayout {
+                case .filled:
+                    return self.configure(collectionView: collectionView, cellType: WaitingChatCell.self, with: chat, for: indexPath)
+                case .empty:
+                    return self.configure(collectionView: collectionView, cellType: WaitingPlugCell.self, with: "is Empty", for: indexPath)
+                }
             }
         })
         
@@ -197,7 +261,7 @@ extension ListViewController {
             
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Uknown section kind") }
             
-            sectionHeader.configure(text: section.description(), font: .laoSangamMN20(), textColor: #colorLiteral(red: 0.5725490196, green: 0.5725490196, blue: 0.5725490196, alpha: 1))
+            sectionHeader.configure(text: section.description(), font: .laoSangamMN20(), textColor: .getHeaderGrayColor())
            return sectionHeader
         }
     }
@@ -239,6 +303,28 @@ extension ListViewController {
         return section
     }
     
+    private func createPlugForActiveChats() -> NSCollectionLayoutSection {
+        // Setup size for item and ground
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.43))
+        
+        // Create item
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // Create group
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        // Create header
+        let sectionHeader = createSectionHeader()
+        
+        // Create section and configure
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20)
+        section.boundarySupplementaryItems = [sectionHeader]
+        
+        return section
+    }
+    
     private func createWaitingChats() -> NSCollectionLayoutSection {
         // Setup size for item and group
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
@@ -263,6 +349,29 @@ extension ListViewController {
         return section
     }
     
+    private func createPlugForWaitingChats() -> NSCollectionLayoutSection {
+        // Setup size for item and ground
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(88))
+        
+        // Create item
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // Create group
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        // Create header
+        let sectionHeader = createSectionHeader()
+        
+        // Create section and configure
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20)
+        section.boundarySupplementaryItems = [sectionHeader]
+        section.orthogonalScrollingBehavior = .groupPagingCentered
+        
+        return section
+    }
+    
     private func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnviroment) -> NSCollectionLayoutSection? in
             // Create section for choosing kinds chats
@@ -272,9 +381,19 @@ extension ListViewController {
             
             switch section {
             case .waitingChats:
-                return self.createWaitingChats()
+                switch self.waitingLayout {
+                case .filled:
+                    return self.createWaitingChats()
+                case .empty:
+                    return self.createPlugForWaitingChats()
+                }
             case .activeChats:
-                return self.createActiveChats()
+                switch self.activeLayout {
+                case .filled:
+                    return self.createActiveChats()
+                case .empty:
+                    return self.createPlugForActiveChats()
+                }
             }
         }
         
@@ -304,11 +423,15 @@ extension ListViewController: UICollectionViewDelegate {
         
         switch section {
         case .waitingChats:
+            guard !isEmptyWaitingChats else { return }
+            
             let chatRequestViewController = ChatRequsetViewController(chat: chat)
             chatRequestViewController.delegate = self
             
             self.present(chatRequestViewController, animated: true)
         case .activeChats:
+            guard !isEmptyActiveChats else { return }
+            
             let chatsViewController = ChatsViewController(user: currentUser, chat: chat)
             navigationController?.pushViewController(chatsViewController, animated: true)
         }

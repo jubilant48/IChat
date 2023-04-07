@@ -28,6 +28,9 @@ final class PeopleViewController: UIViewController {
     var users: [MUser] = []
     private var usersListener: ListenerRegistration?
     
+    private var isSearch: Bool = false
+    private var countPerson: Int = 0
+    
     private var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, MUser>!
     private let currentUser: MUser
@@ -154,9 +157,19 @@ final class PeopleViewController: UIViewController {
         }
         
         var snapshot = NSDiffableDataSourceSnapshot<Section, MUser>()
+        
+        if searchText == nil || searchText == "" {
+            isSearch = false
+            countPerson = users.count
+        } else {
+            isSearch = true
+            countPerson = filtered.count
+        }
 
         snapshot.appendSections([.users])
         snapshot.appendItems(filtered, toSection: .users)
+        
+        snapshot.reloadSections([.users])
 
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
@@ -246,9 +259,11 @@ extension PeopleViewController {
             
             guard let section = Section(rawValue: indexPath.section) else { fatalError("Uknown section kind") }
             
-            let items = self.dataSource.snapshot().itemIdentifiers(inSection: .users)
-            
-            sectionHeader.configure(text: section.description(usersCount: items.count), font: .systemFont(ofSize: 36, weight: .light), textColor: .label)
+            if self.isSearch {
+                sectionHeader.configure(text: "\(self.countPerson) person", font: .systemFont(ofSize: 36, weight: .light), textColor: .label)
+            } else {
+                sectionHeader.configure(text: section.description(usersCount: self.countPerson), font: .systemFont(ofSize: 36, weight: .light), textColor: .label)
+            }
             
            return sectionHeader
         }
@@ -287,6 +302,8 @@ extension PeopleViewController: UICollectionViewDelegate {
             case .success(_):
                 let profileViewController = ProfileViewController(user: user, state: .withButton)
                 isContinue = false
+                profileViewController.delegate = self
+                
                 self.present(profileViewController, animated: true)
             case .failure(let error):
                 self.showAlert(with: "Ошибка!", and: error.localizedDescription)
@@ -302,24 +319,11 @@ extension PeopleViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - Display Canvas
+// MARK: - Profile novigation
 
-import SwiftUI
-
-struct PeopleViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewController = MainTabBarController()
-        
-        func makeUIViewController(context: Context) -> some MainTabBarController {
-            return viewController
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        }
+extension PeopleViewController: ProfileNavigation {
+    func show(_ chat: MChat, for user: MUser) {
+        let chatViewController = ChatsViewController(user: user, chat: chat)
+        navigationController?.pushViewController(chatViewController, animated: true)
     }
 }

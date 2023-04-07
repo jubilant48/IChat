@@ -7,7 +7,11 @@
 
 import UIKit
 
+// MARK: - Protocol
+
 protocol AuthNavigatingDelegate : AnyObject {
+    // MARK: - Methods
+    
     func toLoginViewController()
     func toSignUpViewController()
 }

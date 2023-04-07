@@ -7,7 +7,11 @@
 
 import UIKit
 
+// MARK: - Protocol
+
 protocol WaitingChatsNavigation: AnyObject {
+    // MARK: - Methods
+    
     func removeWaitingChat(chat: MChat)
     func changeToActive(chat: MChat)
 }

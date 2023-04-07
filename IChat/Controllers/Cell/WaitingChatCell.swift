@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-final class WaitingChatCell: UICollectionViewCell, SelfCongiguringCell {
+final class WaitingChatCell: UICollectionViewCell {
     // MARK: Properties
     
     static var reuseId: String = "WaitingChatCell"
@@ -25,16 +25,6 @@ final class WaitingChatCell: UICollectionViewCell, SelfCongiguringCell {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Methods
-    
-    func configure<U>(with value: U) where U : Hashable {
-        guard let chat: MChat = value as? MChat else {
-            fatalError("Unknown model object")
-        }
-        
-        friendImageView.sd_setImage(with: URL(string: chat.friendAvatarStringURL))
     }
 }
 
@@ -59,5 +49,17 @@ extension WaitingChatCell {
             friendImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             friendImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
+    }
+}
+
+// MARK: - Self configuring cell
+
+extension WaitingChatCell: SelfCongiguringCell {
+    func configure<U>(with value: U) where U : Hashable {
+        guard let chat: MChat = value as? MChat else {
+            fatalError("Unknown model object")
+        }
+        
+        friendImageView.sd_setImage(with: URL(string: chat.friendAvatarStringURL))
     }
 }

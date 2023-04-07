@@ -55,6 +55,9 @@
 		FAA1E3A42973357500EFDC05 /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1E3A32973357500EFDC05 /* UserError.swift */; };
 		FAA8836F297EE5C90004EAD5 /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8836E297EE5C90004EAD5 /* ListenerService.swift */; };
 		FAB107FB298AEBCD003EF838 /* EyeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB107FA298AEBCD003EF838 /* EyeButton.swift */; };
+		FADAAD9529E07A0B00F291BF /* ActivePlugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADAAD9429E07A0B00F291BF /* ActivePlugCell.swift */; };
+		FADAAD9729E09D8800F291BF /* ProfileNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADAAD9629E09D8700F291BF /* ProfileNavigation.swift */; };
+		FADC996429D75A0300BF5249 /* WaitingPlugCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC996329D75A0300BF5249 /* WaitingPlugCell.swift */; };
 		FAED1E192979DB5F00B85090 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAED1E182979DB5F00B85090 /* StorageService.swift */; };
 		FAED1E1B2979DE7800B85090 /* UIImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAED1E1A2979DE7800B85090 /* UIImage + Extension.swift */; };
 		FAEFAE06296B2B12009C7B45 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAEFAE05296B2B12009C7B45 /* ProfileViewController.swift */; };
@@ -119,6 +122,9 @@
 		FAA1E3A32973357500EFDC05 /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
 		FAA8836E297EE5C90004EAD5 /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
 		FAB107FA298AEBCD003EF838 /* EyeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EyeButton.swift; sourceTree = "<group>"; };
+		FADAAD9429E07A0B00F291BF /* ActivePlugCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivePlugCell.swift; sourceTree = "<group>"; };
+		FADAAD9629E09D8700F291BF /* ProfileNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNavigation.swift; sourceTree = "<group>"; };
+		FADC996329D75A0300BF5249 /* WaitingPlugCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPlugCell.swift; sourceTree = "<group>"; };
 		FAED1E182979DB5F00B85090 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		FAED1E1A2979DE7800B85090 /* UIImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Extension.swift"; sourceTree = "<group>"; };
 		FAEFAE05296B2B12009C7B45 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +170,8 @@
 			children = (
 				FA1ED8CE295CCE8300403B3D /* ActiveChatCell.swift */,
 				FA29B2202965DFA4008EC14B /* WaitingChatCell.swift */,
+				FADC996329D75A0300BF5249 /* WaitingPlugCell.swift */,
+				FADAAD9429E07A0B00F291BF /* ActivePlugCell.swift */,
 				FA796D9C2967403300A78846 /* UserCell.swift */,
 			);
 			path = Cell;
@@ -175,6 +183,7 @@
 				FA29B2222965E15A008EC14B /* SelfCongiguringCell.swift */,
 				FA2B7803296F52A50084D1BD /* AuthNavigatingDelegate.swift */,
 				FA720A65297F279400E28CF8 /* WaitingChatsNavigation.swift */,
+				FADAAD9629E09D8700F291BF /* ProfileNavigation.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -447,6 +456,8 @@
 				FA796D9B2967271F00A78846 /* MChat.swift in Sources */,
 				FA4BD2C12954B737001028FD /* ListViewController.swift in Sources */,
 				FAA1A7562950CF7500FD9C1D /* OneLineTextField.swift in Sources */,
+				FADAAD9729E09D8800F291BF /* ProfileNavigation.swift in Sources */,
+				FADC996429D75A0300BF5249 /* WaitingPlugCell.swift in Sources */,
 				FA29B2262965E628008EC14B /* SectionHeader.swift in Sources */,
 				FA170F542979D40B00A3894B /* UIApplication + Extension.swift in Sources */,
 				FA29B2232965E15A008EC14B /* SelfCongiguringCell.swift in Sources */,
@@ -486,6 +497,7 @@
 				FA2B7804296F52A50084D1BD /* AuthNavigatingDelegate.swift in Sources */,
 				FA796D9F2967421000A78846 /* UIViewController + Extension.swift in Sources */,
 				FA6CC5F9294A5A30001B5CC3 /* UIColor + Extension.swift in Sources */,
+				FADAAD9529E07A0B00F291BF /* ActivePlugCell.swift in Sources */,
 				FA57602729ABE30A0008D385 /* Date + Extension.swift in Sources */,
 				FA29B2212965DFA4008EC14B /* WaitingChatCell.swift in Sources */,
 				FAED1E1B2979DE7800B85090 /* UIImage + Extension.swift in Sources */,
