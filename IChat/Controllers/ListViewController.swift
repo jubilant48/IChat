@@ -156,7 +156,7 @@ final class ListViewController: UIViewController {
     }
     
     private func addActiveChatsListeners() {
-        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats) { result in
+        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: activeChats, modifiedCompletion: nil) { result in
             switch result {
             case .success(let chats):
                 self.activeChats = chats

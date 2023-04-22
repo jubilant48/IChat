@@ -9,15 +9,16 @@ import UIKit
 import FirebaseFirestore
 
 struct MChat: Hashable, Decodable {
-    // MARK: Properties
+    // MARK: - Properties
     
-    static let waitingPlugModel = MChat(friendUsername: "nil", friendAvatarStringURL: "0", lastMessageContent: "nil", friendId: "0", lastMessageDate: Date())
-    static let activePlugModel = MChat(friendUsername: "nil", friendAvatarStringURL: "1", lastMessageContent: "nil", friendId: "1", lastMessageDate: Date())
+    static let waitingPlugModel = MChat(friendUsername: "nil", friendAvatarStringURL: "0", lastMessageContent: "nil", friendId: "0", lastMessageDate: Date(), lastSenderId: "0")
+    static let activePlugModel = MChat(friendUsername: "nil", friendAvatarStringURL: "1", lastMessageContent: "nil", friendId: "1", lastMessageDate: Date(), lastSenderId: "1")
     
     var friendUsername: String
     var friendAvatarStringURL: String
     var lastMessageContent: String
     var lastMessageDate: Date
+    var lastSenderId: String
     var friendId: String
     
     var representation: [String: Any] {
@@ -25,18 +26,20 @@ struct MChat: Hashable, Decodable {
         representation["friendAvatarStringURL"] = friendAvatarStringURL
         representation["friendId"] = friendId
         representation["lastMessage"] = lastMessageContent
+        representation["lastSenderId"] = lastSenderId
         representation["lastMessageDate"] = lastMessageDate
         
         return representation
     }
     
-    // MARK: Init
+    // MARK: - Init
     
-    init(friendUsername: String, friendAvatarStringURL: String, lastMessageContent: String, friendId: String, lastMessageDate: Date) {
+    init(friendUsername: String, friendAvatarStringURL: String, lastMessageContent: String, friendId: String, lastMessageDate: Date, lastSenderId: String) {
         self.friendUsername = friendUsername
         self.friendAvatarStringURL = friendAvatarStringURL
         self.lastMessageContent = lastMessageContent
         self.lastMessageDate = lastMessageDate
+        self.lastSenderId = lastSenderId
         self.friendId = friendId
     }
     
@@ -47,13 +50,15 @@ struct MChat: Hashable, Decodable {
               let friendAvatarStringURL = data["friendAvatarStringURL"] as? String,
               let friendId = data["friendId"] as? String,
               let lastMessageContent = data["lastMessage"] as? String,
-              let lastMessageDate = data["lastMessageDate"] as? Timestamp else { return nil }
+              let lastMessageDate = data["lastMessageDate"] as? Timestamp,
+              let lastSenderId = data["lastSenderId"] as? String else { return nil }
         
         self.friendUsername = friendUsername
         self.friendAvatarStringURL = friendAvatarStringURL
         self.friendId = friendId
         self.lastMessageContent = lastMessageContent
         self.lastMessageDate = lastMessageDate.dateValue()
+        self.lastSenderId = lastSenderId
     }
     
     init?(document: QueryDocumentSnapshot) {
@@ -63,16 +68,18 @@ struct MChat: Hashable, Decodable {
               let friendAvatarStringURL = data["friendAvatarStringURL"] as? String,
               let friendId = data["friendId"] as? String,
               let lastMessageContent = data["lastMessage"] as? String,
-              let lastMessageDate = data["lastMessageDate"] as? Timestamp else { return nil }
+              let lastMessageDate = data["lastMessageDate"] as? Timestamp,
+              let lastSenderId = data["lastSenderId"] as? String else { return nil }
         
         self.friendUsername = friendUsername
         self.friendAvatarStringURL = friendAvatarStringURL
         self.friendId = friendId
         self.lastMessageContent = lastMessageContent
         self.lastMessageDate = lastMessageDate.dateValue()
+        self.lastSenderId = lastSenderId
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(friendId)

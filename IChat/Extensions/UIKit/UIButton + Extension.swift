@@ -7,7 +7,10 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UIButton {
+    // MARK: - Init
     
     convenience init(title: String, titleColor: UIColor, backgroundColor: UIColor,
                      font: UIFont? = .avenir20(), isShadow: Bool = false, cornerRadius: CGFloat = 4) {
@@ -27,6 +30,8 @@ extension UIButton {
         }
     }
     
+    // MARK: - Methods
+    
     func customizeGoogleButton() {
         let googleLogo = UIImageView(image: UIImage(named: "googleLogo"), contentMode: .scaleAspectFit)
         
@@ -39,5 +44,4 @@ extension UIButton {
             googleLogo.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
     }
-    
 }

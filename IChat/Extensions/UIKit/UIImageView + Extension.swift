@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UIImageView {
-    // MARK: Init
+    // MARK: - Init
     
     convenience init(image: UIImage?, contentMode: UIView.ContentMode) {
         self.init()
@@ -17,7 +19,7 @@ extension UIImageView {
         self.contentMode = contentMode
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     func setupColor(color: UIColor) {
         let templateImage = self.image?.withRenderingMode(.alwaysTemplate)

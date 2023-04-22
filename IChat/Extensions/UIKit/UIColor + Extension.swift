@@ -7,8 +7,11 @@
 
 import UIKit
 
-extension UIColor {
-    
+// MARK: - Extension
+
+extension UIColor {    
+    // MARK: - Methods
+
     static func buttonRed() -> UIColor {
         return #colorLiteral(red: 0.8156862745, green: 0.007843137255, blue: 0.1058823529, alpha: 1)
     }

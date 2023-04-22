@@ -7,7 +7,11 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UISegmentedControl {
+    // MARK: - Init
+    
     convenience init(first: String, second: String) {
         self.init()
         

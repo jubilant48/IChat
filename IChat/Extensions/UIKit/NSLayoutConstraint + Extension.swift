@@ -7,7 +7,11 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension NSLayoutConstraint {
+    // MARK: - Methods
+    
     /**
      Change multiplier constraint
 

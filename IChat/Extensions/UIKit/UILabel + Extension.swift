@@ -7,7 +7,11 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UILabel {
+    // MARK: - Init
+    
     convenience init(text: String, font: UIFont? = .avenir20()) {
         self.init()
         

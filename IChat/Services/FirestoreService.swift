@@ -85,7 +85,7 @@ final class FirestoreService {
         let messageReference = reference.document(self.currentUser.id).collection("messages")
         
         let message = MMessage(user: currentUser, content: message, isViewed: false)
-        let chat = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id, lastMessageDate: message.sentDate)
+        let chat = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id, lastMessageDate: message.sentDate, lastSenderId: currentUser.id)
         
         reference.document(currentUser.id).setData(chat.representation) { error in
             if let error = error {
@@ -204,12 +204,22 @@ final class FirestoreService {
         
     }
     
-    func sendMessage(chat: MChat, message: MMessage, completion: @escaping (Result<Void, Error>) -> Void) {
+    func sendMessage(chat: MChat, message: MMessage, isImage: Bool = false , completion: @escaping (Result<Void, Error>) -> Void) {
         let friendReference = usersReference.document(chat.friendId).collection("activeChats").document(currentUser.id)
         let friendMessageReference = friendReference.collection("messages")
-        let myMessageReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId).collection("messages")
+        let myReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId)
+        let myMessageReference = myReference.collection("messages")
         
-        let chatForFriend = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: message.content, friendId: currentUser.id, lastMessageDate: message.sentDate)
+        let messageContent = isImage ? "Изображение 🖼" : message.content
+        
+        // Update chat for cuurent user
+        var chat = chat
+        chat.lastMessageContent = messageContent
+        chat.lastSenderId = self.currentUser.id
+        chat.lastMessageDate = message.sentDate
+        
+        // Create chat for fried
+        let chatForFriend = MChat(friendUsername: currentUser.username, friendAvatarStringURL: currentUser.avatarStringUrl, lastMessageContent: messageContent, friendId: currentUser.id, lastMessageDate: message.sentDate, lastSenderId: currentUser.id)
         
         friendReference.setData(chatForFriend.representation) { error in
             if let error = error {
@@ -223,17 +233,22 @@ final class FirestoreService {
                     return
                 }
                 
-                myMessageReference.addDocument(data: message.representation) { error in
+                myReference.setData(chat.representation) { error in
                     if let error = error {
                         completion(.failure(error))
-                        return
                     }
                     
-                    completion(.success(Void()))
+                    myMessageReference.addDocument(data: message.representation) { error in
+                        if let error = error {
+                            completion(.failure(error))
+                            return
+                        }
+                        
+                        completion(.success(Void()))
+                    }
                 }
             }
         }
-        
     }
     
     func checkExistenceWaitingChat(for user: MUser, completion: @escaping (Result<Bool, Error>) -> Void) {
@@ -268,23 +283,6 @@ final class FirestoreService {
                 completion(.failure(error))
             }
         }
-    }
-    
-    func updateLastMessage(for chat: MChat, message: String, lastDate: Date) {
-        let friendReference = usersReference.document(chat.friendId).collection("activeChats").document(currentUser.id)
-        let myMessageReference = usersReference.document(currentUser.id).collection("activeChats").document(chat.friendId)
-
-        let date = Timestamp(date: lastDate)
-
-        friendReference.updateData([
-            "lastMessage": message,
-            "lastMessageDate": date
-        ])
-
-        myMessageReference.updateData([
-            "lastMessage": message,
-            "lastMessageDate": date
-        ])
     }
     
     func updateViewedMessage(for senderId: String, friendId: String) {

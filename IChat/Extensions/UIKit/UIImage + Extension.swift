@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UIImage {
-    // MARK: Properties
+    // MARK: - Properties
     
     var scaledToSafeUploadSize: UIImage? {
         let maxImageSideLenght: CGFloat = 480
@@ -20,7 +22,7 @@ extension UIImage {
         return image(scaledTo: newImageSize)
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     func image(scaledTo size: CGSize) -> UIImage? {
         defer {
@@ -32,6 +34,4 @@ extension UIImage {
         
         return UIGraphicsGetImageFromCurrentImageContext()
     }
-    
-    
 }

@@ -7,11 +7,14 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UIScrollView {
+    // MARK: - Properties
+    
     var isAtBottom: Bool {
         return contentOffset.y >= verticalOffsetForBottom
     }
-    
     var verticalOffsetForBottom: CGFloat {
         let scrollViewHeight = bounds.height
         let scrollContentSizeHeight = contentSize.height

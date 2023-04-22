@@ -100,7 +100,7 @@ final class ProfileViewController: UIViewController {
             FirestoreService.shared.getChat(for: self.user.id) { result in
                 switch result {
                 case .success(let chat):
-                    self.delegate?.show(chat, for: self.user)
+                    self.delegate?.show(chat)
                 case .failure(let error):
                     let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                     let viewController = scene!.windows[0].rootViewController

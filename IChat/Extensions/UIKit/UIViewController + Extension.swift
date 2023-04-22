@@ -7,7 +7,17 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UIViewController {
+    // MARK: - Properties
+    
+    var appDelegate: AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    // MARK: - Methods
+    
      func configure<T: SelfCongiguringCell, U: Hashable>(collectionView: UICollectionView, cellType: T.Type, with value: U, for indexPath: IndexPath) -> T {
          guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellType.reuseId, for: indexPath) as? T else {
              fatalError("Unable to dequeue \(cellType)")

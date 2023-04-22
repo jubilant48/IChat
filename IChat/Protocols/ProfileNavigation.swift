@@ -12,5 +12,5 @@ import UIKit
 protocol ProfileNavigation: AnyObject {
     // MARK: - Methods
     
-    func show(_ chat: MChat, for user: MUser) 
+    func show(_ chat: MChat) 
 }

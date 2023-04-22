@@ -123,16 +123,6 @@ final class ChatsViewController: MessagesViewController {
         messages.append(message)
         messages.sort()
         
-        if chat.lastMessageDate < message.sentDate {
-            if isImage {
-                FirestoreService.shared.updateLastMessage(for: self.chat, message: "Изображение 🖼", lastDate: message.sentDate)
-                chat.lastMessageDate = message.sentDate
-            } else {
-                FirestoreService.shared.updateLastMessage(for: self.chat, message: message.content, lastDate: message.sentDate)
-                chat.lastMessageDate = message.sentDate
-            }
-        }
-        
         messagesCollectionView.reloadData()
         
         if message.isViewed {
@@ -150,7 +140,7 @@ final class ChatsViewController: MessagesViewController {
                 var message = MMessage(user: self.user, image: image, isViewed: false)
                 message.downloadURL = url
                 
-                FirestoreService.shared.sendMessage(chat: self.chat, message: message) { result in
+                FirestoreService.shared.sendMessage(chat: self.chat, message: message, isImage: true) { result in
                     switch result {
                     case .success():
                         self.messagesCollectionView.scrollToLastItem()
@@ -343,6 +333,7 @@ extension ChatsViewController: MessagesDisplayDelegate {
 extension ChatsViewController: InputBarAccessoryViewDelegate {
     func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
         let message = MMessage(user: user, content: text, isViewed: false)
+        
         FirestoreService.shared.sendMessage(chat: chat, message: message) { result in
             switch result {
             case .success():
@@ -352,6 +343,7 @@ extension ChatsViewController: InputBarAccessoryViewDelegate {
                 self.showAlert(with: "Ошибка", and: error.localizedDescription)
             }
         }
+        
         inputBar.inputTextView.text = ""
     }
 }

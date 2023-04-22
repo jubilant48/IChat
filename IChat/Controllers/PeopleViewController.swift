@@ -75,7 +75,11 @@ final class PeopleViewController: UIViewController {
             do {
                 try Auth.auth().signOut()
                 
+                self.appDelegate.messageListener?.remove()
+                self.appDelegate.messageListener = nil
+                
                 let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                
                 scene!.windows[0].rootViewController = AuthViewController()
             } catch {
                 print("Error singing out: \(error.localizedDescription)")
@@ -322,8 +326,8 @@ extension PeopleViewController: UICollectionViewDelegate {
 // MARK: - Profile novigation
 
 extension PeopleViewController: ProfileNavigation {
-    func show(_ chat: MChat, for user: MUser) {
-        let chatViewController = ChatsViewController(user: user, chat: chat)
+    func show(_ chat: MChat) {
+        let chatViewController = ChatsViewController(user: currentUser, chat: chat)
         navigationController?.pushViewController(chatViewController, animated: true)
     }
 }

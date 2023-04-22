@@ -7,7 +7,10 @@
 
 import UIKit
 
+// MARK: - Extension
+
 extension UIFont {
+    // MARK: - Methods
     
     static func avenir20() -> UIFont? {
         return UIFont.init(name: "avenir", size: 20)
