@@ -75,8 +75,11 @@ final class PeopleViewController: UIViewController {
             do {
                 try Auth.auth().signOut()
                 
-                self.appDelegate.messageListener?.remove()
-                self.appDelegate.messageListener = nil
+                self.appDelegate.activeChatsListener?.remove()
+                self.appDelegate.activeChatsListener = nil
+                
+                self.appDelegate.waitingChatsListener?.remove()
+                self.appDelegate.waitingChatsListener = nil
                 
                 let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                 

@@ -55,5 +55,9 @@ extension UIColor {
     static func getTextFieldColor() -> UIColor {
         return UIColor(named: "textFieldColor")!
     }
+    
+    static func getGrayColor() -> UIColor {
+        return UIColor(named: "grayColor")!
+    }
 }
                  

@@ -24,6 +24,17 @@ extension UIView {
             
             self.layer.insertSublayer(gradientLayer, at: 0)
         }
+    }
     
+    func applyGradient(_ gradient: GradientView, cornerRadius: CGFloat) {
+        self.backgroundColor = nil
+        self.layoutIfNeeded()
+        
+        if let gradientLayer = gradient.layer.sublayers?.first as? CAGradientLayer {
+            gradientLayer.frame = self.bounds
+            gradientLayer.cornerRadius = cornerRadius
+            
+            self.layer.insertSublayer(gradientLayer, at: 0)
+        }
     }
 }

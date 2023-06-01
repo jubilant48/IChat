@@ -15,7 +15,7 @@ final class FirestoreService {
     static let shared = FirestoreService()
     
     let database = Firestore.firestore()
-    
+        
     private var usersReference: CollectionReference {
         return database.collection("users")
     }

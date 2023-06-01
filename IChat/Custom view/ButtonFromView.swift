@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Class
+
 final class ButtonFromView: UIView {
-    // MARK: Init
+    // MARK: - Init
     
     init(label: UILabel, button: UIButton) {
         super.init(frame: .zero)

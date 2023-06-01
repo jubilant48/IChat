@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Class
+
 final class OneLineTextField: UITextField {
-    // MARK: Init
+    // MARK: - Init
     
     convenience init(font: UIFont? = .avenir20(), isSecure: Bool = false) {
         self.init()

@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Class
+
 final class EyeButton: UIButton {
-    // MARK: Init
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,7 +22,7 @@ final class EyeButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Methods
+    // MARK: - Methods
     
     private func setupEyeButton() {
         setImage(UIImage(systemName: "eye.slash"), for: .normal)

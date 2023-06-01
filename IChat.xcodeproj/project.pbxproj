@@ -19,6 +19,7 @@
 		FA2B7801296F4B0A0084D1BD /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2B7800296F4B0A0084D1BD /* AuthError.swift */; };
 		FA2B7804296F52A50084D1BD /* AuthNavigatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2B7803296F52A50084D1BD /* AuthNavigatingDelegate.swift */; };
 		FA3E5B08298FF99F002673AE /* NSLayoutConstraint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3E5B07298FF99E002673AE /* NSLayoutConstraint + Extension.swift */; };
+		FA48B32A2A1E73D4007C6505 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48B3292A1E73D4007C6505 /* DateHelper.swift */; };
 		FA4BD2BE295490F7001028FD /* UISegmentedControl + Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BD2BD295490F7001028FD /* UISegmentedControl + Extension .swift */; };
 		FA4BD2C12954B737001028FD /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BD2C02954B737001028FD /* ListViewController.swift */; };
 		FA4BD2C42954B806001028FD /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BD2C32954B806001028FD /* MainTabBarController.swift */; };
@@ -43,7 +44,7 @@
 		FA796D9B2967271F00A78846 /* MChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA796D9A2967271F00A78846 /* MChat.swift */; };
 		FA796D9D2967403300A78846 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA796D9C2967403300A78846 /* UserCell.swift */; };
 		FA796D9F2967421000A78846 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA796D9E2967421000A78846 /* UIViewController + Extension.swift */; };
-		FA991825295CAF2800B88EDA /* Bundle-Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA991824295CAF2800B88EDA /* Bundle-Decodable.swift */; };
+		FA991825295CAF2800B88EDA /* Bundle + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA991824295CAF2800B88EDA /* Bundle + Extension.swift */; };
 		FAA1A7502950BF1100FD9C1D /* ButtonFromView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A74F2950BF1100FD9C1D /* ButtonFromView.swift */; };
 		FAA1A7522950C7D700FD9C1D /* UIStackView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A7512950C7D700FD9C1D /* UIStackView + Extension.swift */; };
 		FAA1A7542950CBB800FD9C1D /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A7532950CBB800FD9C1D /* SignUpViewController.swift */; };
@@ -51,6 +52,7 @@
 		FAA1A7582950E09600FD9C1D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A7572950E09600FD9C1D /* LoginViewController.swift */; };
 		FAA1A75A2950F51D00FD9C1D /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A7592950F51D00FD9C1D /* SetupProfileViewController.swift */; };
 		FAA1A75C2950F7B700FD9C1D /* AddPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1A75B2950F7B700FD9C1D /* AddPhotoView.swift */; };
+		FAA1AF3D2A0EA47B00DCB92C /* BedgeLabel .swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1AF3C2A0EA47B00DCB92C /* BedgeLabel .swift */; };
 		FAA1E3A229732B3100EFDC05 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1E3A129732B3100EFDC05 /* FirestoreService.swift */; };
 		FAA1E3A42973357500EFDC05 /* UserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA1E3A32973357500EFDC05 /* UserError.swift */; };
 		FAA8836F297EE5C90004EAD5 /* ListenerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8836E297EE5C90004EAD5 /* ListenerService.swift */; };
@@ -85,6 +87,7 @@
 		FA2B7800296F4B0A0084D1BD /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		FA2B7803296F52A50084D1BD /* AuthNavigatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigatingDelegate.swift; sourceTree = "<group>"; };
 		FA3E5B07298FF99E002673AE /* NSLayoutConstraint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint + Extension.swift"; sourceTree = "<group>"; };
+		FA48B3292A1E73D4007C6505 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		FA4BD2BD295490F7001028FD /* UISegmentedControl + Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl + Extension .swift"; sourceTree = "<group>"; };
 		FA4BD2C02954B737001028FD /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		FA4BD2C32954B806001028FD /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
@@ -111,7 +114,7 @@
 		FA796D9A2967271F00A78846 /* MChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MChat.swift; sourceTree = "<group>"; };
 		FA796D9C2967403300A78846 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		FA796D9E2967421000A78846 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
-		FA991824295CAF2800B88EDA /* Bundle-Decodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle-Decodable.swift"; sourceTree = "<group>"; };
+		FA991824295CAF2800B88EDA /* Bundle + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle + Extension.swift"; sourceTree = "<group>"; };
 		FAA1A74F2950BF1100FD9C1D /* ButtonFromView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonFromView.swift; sourceTree = "<group>"; };
 		FAA1A7512950C7D700FD9C1D /* UIStackView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStackView + Extension.swift"; sourceTree = "<group>"; };
 		FAA1A7532950CBB800FD9C1D /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +122,7 @@
 		FAA1A7572950E09600FD9C1D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		FAA1A7592950F51D00FD9C1D /* SetupProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
 		FAA1A75B2950F7B700FD9C1D /* AddPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoView.swift; sourceTree = "<group>"; };
+		FAA1AF3C2A0EA47B00DCB92C /* BedgeLabel .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BedgeLabel .swift"; sourceTree = "<group>"; };
 		FAA1E3A129732B3100EFDC05 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		FAA1E3A32973357500EFDC05 /* UserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserError.swift; sourceTree = "<group>"; };
 		FAA8836E297EE5C90004EAD5 /* ListenerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListenerService.swift; sourceTree = "<group>"; };
@@ -206,7 +210,6 @@
 				FAED1E182979DB5F00B85090 /* StorageService.swift */,
 				FAA8836E297EE5C90004EAD5 /* ListenerService.swift */,
 				FAD4663429E9B4BE0050133D /* NotificationService.swift */,
-				FA796D97296726F600A78846 /* Model */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -215,25 +218,54 @@
 			isa = PBXGroup;
 			children = (
 				FA2B77FE296F490E0084D1BD /* Validators.swift */,
-				FA2B7800296F4B0A0084D1BD /* AuthError.swift */,
-				FAA1E3A32973357500EFDC05 /* UserError.swift */,
-				FAF7D66F29CF5B6E0062FEC7 /* ChatError.swift */,
+				FA48B3292A1E73D4007C6505 /* DateHelper.swift */,
+				FA48B3262A1E6C35007C6505 /* Error */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		FA4BD2C22954B7A2001028FD /* Controllers */ = {
+		FA48B3262A1E6C35007C6505 /* Error */ = {
 			isa = PBXGroup;
 			children = (
-				FA9A9AF1299E9302009ABE6E /* SignIn&Auth */,
+				FAF7D66F29CF5B6E0062FEC7 /* ChatError.swift */,
+				FAA1E3A32973357500EFDC05 /* UserError.swift */,
+				FA2B7800296F4B0A0084D1BD /* AuthError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		FA48B3272A1E6CB2007C6505 /* Custom view */ = {
+			isa = PBXGroup;
+			children = (
+				FAEFAE07296B34F6009C7B45 /* InsertableTextField.swift */,
+				FAA1A74F2950BF1100FD9C1D /* ButtonFromView.swift */,
+				FAA1A7552950CF7500FD9C1D /* OneLineTextField.swift */,
+				FAA1A75B2950F7B700FD9C1D /* AddPhotoView.swift */,
+				FA6C824E295CE6760041D14F /* GradientView.swift */,
+				FAA1AF3C2A0EA47B00DCB92C /* BedgeLabel .swift */,
+				FAB107FA298AEBCD003EF838 /* EyeButton.swift */,
+			);
+			path = "Custom view";
+			sourceTree = "<group>";
+		};
+		FA48B3282A1E6E0B007C6505 /* Main */ = {
+			isa = PBXGroup;
+			children = (
 				FA4BD2C32954B806001028FD /* MainTabBarController.swift */,
 				FA4BD2C52954B865001028FD /* PeopleViewController.swift */,
 				FA4BD2C02954B737001028FD /* ListViewController.swift */,
 				FAEFAE05296B2B12009C7B45 /* ProfileViewController.swift */,
 				FAEFAE0B296B4C0E009C7B45 /* ChatRequestViewController.swift */,
 				FAF394002982F1DC00A052F7 /* ChatsViewController.swift */,
-				FA29B2272965F15C008EC14B /* Header */,
-				FA1ED8CD295CCE5B00403B3D /* Cell */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		FA4BD2C22954B7A2001028FD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FA48B3282A1E6E0B007C6505 /* Main */,
+				FA9A9AF1299E9302009ABE6E /* SignIn&Auth */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -241,6 +273,7 @@
 		FA57602829ABEAB40008D385 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FA991824295CAF2800B88EDA /* Bundle + Extension.swift */,
 				FA57602629ABE30A0008D385 /* Date + Extension.swift */,
 			);
 			path = Foundation;
@@ -269,9 +302,13 @@
 			children = (
 				FA6CC5E0294A4A37001B5CC3 /* AppDelegate.swift */,
 				FA6CC5E2294A4A37001B5CC3 /* SceneDelegate.swift */,
+				FA29B2242965E17D008EC14B /* Protocols */,
+				FA796D97296726F600A78846 /* Model */,
 				FA2B77FB296F3E750084D1BD /* Services */,
 				FA4BD2C22954B7A2001028FD /* Controllers */,
-				FA29B2242965E17D008EC14B /* Protocols */,
+				FA48B3272A1E6CB2007C6505 /* Custom view */,
+				FA1ED8CD295CCE5B00403B3D /* Cell */,
+				FA29B2272965F15C008EC14B /* Header */,
 				FAA1A74E2950BD1700FD9C1D /* Extensions */,
 				FA2B7802296F4E3C0084D1BD /* Helpers */,
 				FA6CC5E9294A4A38001B5CC3 /* Assets.xcassets */,
@@ -328,13 +365,6 @@
 		FAA1A74E2950BD1700FD9C1D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				FAEFAE07296B34F6009C7B45 /* InsertableTextField.swift */,
-				FAA1A74F2950BF1100FD9C1D /* ButtonFromView.swift */,
-				FAA1A7552950CF7500FD9C1D /* OneLineTextField.swift */,
-				FAA1A75B2950F7B700FD9C1D /* AddPhotoView.swift */,
-				FA6C824E295CE6760041D14F /* GradientView.swift */,
-				FA991824295CAF2800B88EDA /* Bundle-Decodable.swift */,
-				FAB107FA298AEBCD003EF838 /* EyeButton.swift */,
 				FA57602829ABEAB40008D385 /* Foundation */,
 				FAA1A74D2950BC6800FD9C1D /* UIKit */,
 			);
@@ -479,11 +509,12 @@
 				FA4BD2C62954B865001028FD /* PeopleViewController.swift in Sources */,
 				FAA1E3A229732B3100EFDC05 /* FirestoreService.swift in Sources */,
 				FAB107FB298AEBCD003EF838 /* EyeButton.swift in Sources */,
+				FA48B32A2A1E73D4007C6505 /* DateHelper.swift in Sources */,
 				FAEFAE06296B2B12009C7B45 /* ProfileViewController.swift in Sources */,
 				FA6CC5E5294A4A37001B5CC3 /* AuthViewController.swift in Sources */,
 				FAEFAE0C296B4C0E009C7B45 /* ChatRequestViewController.swift in Sources */,
 				FA57602A29ABEB990008D385 /* MSender.swift in Sources */,
-				FA991825295CAF2800B88EDA /* Bundle-Decodable.swift in Sources */,
+				FA991825295CAF2800B88EDA /* Bundle + Extension.swift in Sources */,
 				FAA8836F297EE5C90004EAD5 /* ListenerService.swift in Sources */,
 				FAA1A75A2950F51D00FD9C1D /* SetupProfileViewController.swift in Sources */,
 				FA6CC5E1294A4A37001B5CC3 /* AppDelegate.swift in Sources */,
@@ -512,6 +543,7 @@
 				FA2B77FD296F3EC00084D1BD /* AuthService.swift in Sources */,
 				FAA1A7582950E09600FD9C1D /* LoginViewController.swift in Sources */,
 				FA720A66297F279400E28CF8 /* WaitingChatsNavigation.swift in Sources */,
+				FAA1AF3D2A0EA47B00DCB92C /* BedgeLabel .swift in Sources */,
 				FAA1A7522950C7D700FD9C1D /* UIStackView + Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

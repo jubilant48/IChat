@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Class
+
 final class InsertableTextField: UITextField {
-    // MARK: Properties
+    // MARK: - Properties
     
     override var textInputMode: UITextInputMode? {
         for mode in UITextInputMode.activeInputModes {
@@ -24,7 +26,7 @@ final class InsertableTextField: UITextField {
     
     private var isEmoji: Bool = false
     
-    // MARK: Init
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,14 +62,14 @@ final class InsertableTextField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @objc private func showEmoji() {
         self.isEmoji = true
         self.becomeFirstResponder()
     }
     
-    // MARK: leftView, rightView, textRect, placeholderRect and editingRect methods
+    // MARK: - Methods
     
     override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
         var rect = super.leftViewRect(forBounds: bounds)

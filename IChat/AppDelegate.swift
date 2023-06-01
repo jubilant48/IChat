@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let notificationService = NotificationService()
     
-    var messageListener: ListenerRegistration?
+    var activeChatsListener: ListenerRegistration?
+    var waitingChatsListener: ListenerRegistration?
     
     // MARK: - Methods
 
@@ -28,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         notificationService.notificationCenter.delegate = notificationService
         
         if Auth.auth().currentUser != nil {
-            addMessageListener()
+            addActiveChatsListener()
+            addWaitingChatsListener()
         }
         
         return true
@@ -59,11 +61,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - Adding listeners service
 
 extension AppDelegate {
-    func addMessageListener() {
-        messageListener = ListenerService.shared.activeChatsObserve(chats: []) { isPushNotification, chat in
-            if isPushNotification {
-                NotificationService().push(chat.lastMessageContent, title: chat.friendUsername)
+    func addActiveChatsListener() {
+        activeChatsListener = ListenerService.shared.activeChatsObserve(chats: []) { isSendPushNotification, chat in
+            if isSendPushNotification {
+                self.notificationService.push(chat.lastMessageContent, title: chat.friendUsername)
             }
+        } completion: { _ in }
+    }
+    
+    func addWaitingChatsListener() {
+        waitingChatsListener = ListenerService.shared.waitingChatsObserve(chats: []) { chat in
+            self.notificationService.push("\(chat.friendUsername) invited you to chat!")
         } completion: { _ in }
     }
 }

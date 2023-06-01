@@ -7,8 +7,10 @@
 
 import UIKit
 
+// MARK: - Class
+
 final class AddPhotoView: UIView {
-    // MARK: Properties
+    // MARK: - Properties
     
     var circleImageView: UIImageView = {
         let imageView = UIImageView()
@@ -20,6 +22,7 @@ final class AddPhotoView: UIView {
         imageView.layer.borderWidth = 1
         return imageView
     }()
+    
     let plusButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -29,7 +32,7 @@ final class AddPhotoView: UIView {
         return button
     }()
     
-    // MARK: Init methods
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +48,7 @@ final class AddPhotoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Layout subviews
+    // MARK: - Life cycle
     
     override func layoutSubviews() {
         super.layoutSubviews()
