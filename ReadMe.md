@@ -52,4 +52,4 @@
 
 | Light Initial | Dark Initial | People light | People dark | 
 | --- | --- | --- | --- |
-|<img src="./Demo_Image/IChat_initial_screen_light.png" height="420">|<img src="./Demo_Image/IChat_initial_screen_dark.png" height="420">|<img src="./Demo_Image/IChat_people_screen_light.png" height="420">|<img src="./Demo_Image/IChat_people_screen_light.png" height="420">|
+|<img src="./Demo_Image/IChat_initial_screen_light.png" height="420">|<img src="./Demo_Image/IChat_initial_screen_dark.png" height="420">|<img src="./Demo_Image/IChat_people_screen_light.png" height="420">|<img src="./Demo_Image/IChat_people_screen_dark.png" height="420">|
