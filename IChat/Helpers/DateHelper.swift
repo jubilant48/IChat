@@ -28,7 +28,8 @@ final class DateHelper {
         let helper = DateHelper()
         let dateString: String
         
-        let diff = date.distance(from: Date(), only: .day)
+        let diff = Calendar(identifier: .gregorian).numberOfDaysBetween(date, and: .now)
+        print(diff)
         
         switch diff {
         case 0:

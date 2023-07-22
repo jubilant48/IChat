@@ -13,6 +13,8 @@ import FirebaseFirestore
 final class ChatsViewController: MessagesViewController {
     // MARK: Properties
     
+    var isFirstLaunch: Bool = true
+    
     private let user: MUser
     private var chat: MChat
     
@@ -49,6 +51,10 @@ final class ChatsViewController: MessagesViewController {
         
         configureMessageInputBar()
         configureMessagesCollectionView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         addListeners()
     }
@@ -110,6 +116,7 @@ final class ChatsViewController: MessagesViewController {
                         }
                     }
                 } else {
+                    self?.isFirstLaunch = false
                     self?.insertNewMessage(message: message)
                 }
             case .failure(let error):
@@ -124,11 +131,16 @@ final class ChatsViewController: MessagesViewController {
         messages.sort()
         
         messagesCollectionView.reloadData()
-        
+//        let isLetestMessage = messages.firstIndex(of: message) == (messages.count)
+
         if message.isViewed {
-            self.messagesCollectionView.scrollToLastItem(animated: false)
-        } else  {
-            self.messagesCollectionView.scrollToLastItem(animated: true)
+            DispatchQueue.main.async {
+                self.messagesCollectionView.scrollToLastItem(animated: false)
+            }
+        } else if message.sender.senderId != chat.friendId && !message.isViewed {
+            DispatchQueue.main.async {
+                self.messagesCollectionView.scrollToLastItem(animated: true)
+            }
             FirestoreService.shared.updateViewedMessage(for: message.messageId, friendId: self.chat.friendId)
         }
     }
@@ -143,7 +155,7 @@ final class ChatsViewController: MessagesViewController {
                 FirestoreService.shared.sendMessage(chat: self.chat, message: message, isImage: true) { result in
                     switch result {
                     case .success():
-                        self.messagesCollectionView.scrollToLastItem()
+                        self.messagesCollectionView.scrollToLastItem(animated: false)
                         FirestoreService.shared.updateViewedMessage(for: message.messageId, friendId: self.chat.friendId)
                     case .failure(_):
                         self.showAlert(with: "Ошибка", and: "Изображение не доставлено")

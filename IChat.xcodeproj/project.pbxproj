@@ -18,6 +18,7 @@
 		FA2B77FF296F490E0084D1BD /* Validators.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2B77FE296F490E0084D1BD /* Validators.swift */; };
 		FA2B7801296F4B0A0084D1BD /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2B7800296F4B0A0084D1BD /* AuthError.swift */; };
 		FA2B7804296F52A50084D1BD /* AuthNavigatingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2B7803296F52A50084D1BD /* AuthNavigatingDelegate.swift */; };
+		FA3D68EB2A2A163900C17B18 /* Calendar + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3D68EA2A2A163900C17B18 /* Calendar + Extension.swift */; };
 		FA3E5B08298FF99F002673AE /* NSLayoutConstraint + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3E5B07298FF99E002673AE /* NSLayoutConstraint + Extension.swift */; };
 		FA48B32A2A1E73D4007C6505 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA48B3292A1E73D4007C6505 /* DateHelper.swift */; };
 		FA4BD2BE295490F7001028FD /* UISegmentedControl + Extension .swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4BD2BD295490F7001028FD /* UISegmentedControl + Extension .swift */; };
@@ -86,6 +87,7 @@
 		FA2B77FE296F490E0084D1BD /* Validators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validators.swift; sourceTree = "<group>"; };
 		FA2B7800296F4B0A0084D1BD /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		FA2B7803296F52A50084D1BD /* AuthNavigatingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigatingDelegate.swift; sourceTree = "<group>"; };
+		FA3D68EA2A2A163900C17B18 /* Calendar + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar + Extension.swift"; sourceTree = "<group>"; };
 		FA3E5B07298FF99E002673AE /* NSLayoutConstraint + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint + Extension.swift"; sourceTree = "<group>"; };
 		FA48B3292A1E73D4007C6505 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		FA4BD2BD295490F7001028FD /* UISegmentedControl + Extension .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl + Extension .swift"; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 			children = (
 				FA991824295CAF2800B88EDA /* Bundle + Extension.swift */,
 				FA57602629ABE30A0008D385 /* Date + Extension.swift */,
+				FA3D68EA2A2A163900C17B18 /* Calendar + Extension.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -509,6 +512,7 @@
 				FA4BD2C62954B865001028FD /* PeopleViewController.swift in Sources */,
 				FAA1E3A229732B3100EFDC05 /* FirestoreService.swift in Sources */,
 				FAB107FB298AEBCD003EF838 /* EyeButton.swift in Sources */,
+				FA3D68EB2A2A163900C17B18 /* Calendar + Extension.swift in Sources */,
 				FA48B32A2A1E73D4007C6505 /* DateHelper.swift in Sources */,
 				FAEFAE06296B2B12009C7B45 /* ProfileViewController.swift in Sources */,
 				FA6CC5E5294A4A37001B5CC3 /* AuthViewController.swift in Sources */,
@@ -612,7 +616,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -666,7 +670,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

@@ -121,7 +121,7 @@ final class ListenerService {
     func messagesObserve(chat: MChat, completion: @escaping (Result<MMessage, Error>) -> Void) -> ListenerRegistration? {
         let reference = usersReference.document(currentUserId).collection("activeChats").document(chat.friendId).collection("messages")
         
-        let messagesListener = reference.addSnapshotListener { querySnapshot, error in
+        let messagesListener = reference.addSnapshotListener(includeMetadataChanges: true) { querySnapshot, error in
             guard let snapshot = querySnapshot else {
                 completion(.failure(error!))
                 return
@@ -139,6 +139,7 @@ final class ListenerService {
                     break
                 }
             }
+            
         }
         
         return messagesListener
