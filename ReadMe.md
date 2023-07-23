@@ -53,3 +53,6 @@
 | Light Initial | Dark Initial | People light | People dark | 
 | --- | --- | --- | --- |
 |<img src="./Demo_Image/IChat_initial_screen_light.png" height="420">|<img src="./Demo_Image/IChat_initial_screen_dark.png" height="420">|<img src="./Demo_Image/IChat_people_screen_light.png" height="420">|<img src="./Demo_Image/IChat_people_screen_dark.png" height="420">|
+##
+
+##### In this application I work with Firebase, specifically FirebaseAuth, FirebaseFirestore, FirebaseCore, FirebaseStorage. GoogleSignIn is also used for authentication. For chat tasks, I used MessageKit. SDWebImage library helped me to upload an image from the server. The layout of the interface is done using code.
